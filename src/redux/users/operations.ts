@@ -8,7 +8,7 @@ export const fetchUser = () => {
   return async (dispatch: Dispatch<Action>) => {
     auth.onAuthStateChanged(user => {
       if(user){
-          dispatch(loginUser(user));
+        dispatch(loginUser(user));
       } else {
         dispatch(logoutUser());
       }

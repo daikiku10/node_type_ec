@@ -4,14 +4,11 @@ import './App.css';
 import Header from './components/Header'
 import ItemList from './templates/ItemList';
 import ItemDetail from './templates/ItemDetail';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchUser } from './redux/users/operations';
 
 
 const App = () => {
-  const userSelector = (state:any) => state.user
-  const user = useSelector(userSelector);
-  console.log(user)
   const dispatch = useDispatch();
 
   useEffect(() => {
