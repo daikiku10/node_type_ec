@@ -42,7 +42,9 @@ const Header = () => {
           <Link to={'/'}>
             <Typography variant="h6" className={classes.title} >らくらくラーメン</Typography>
           </Link>
-          <Button color="inherit">ショッピングカート</Button>
+          <Link to={'/cart-item-list'}>
+            <Button color="inherit">ショッピングカート</Button>
+          </Link>
           <Button color="inherit">注文履歴</Button>
           {getUser ?
           <Button color="inherit" onClick={logout}>ログアウト</Button>

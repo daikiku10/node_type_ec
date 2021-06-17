@@ -4,9 +4,9 @@ import './App.css';
 import Header from './components/Header'
 import ItemList from './templates/ItemList';
 import ItemDetail from './templates/ItemDetail';
+import CartItemList from './templates/CartItemList';
 import { useDispatch } from 'react-redux';
 import { fetchUser } from './redux/users/operations';
-import { setItems_action } from './redux/products/operations';
 
 
 const App = () => {
@@ -22,6 +22,7 @@ const App = () => {
         <Switch>
           <Route exact path='/' component={ItemList} />
           <Route exact path='/item-detail/:item_id' component={ItemDetail} />
+          <Route exact path='/cart-item-list' component={CartItemList} />
         </Switch>
       </BrowserRouter>
     </div>
