@@ -6,6 +6,7 @@ import ItemList from './templates/ItemList';
 import ItemDetail from './templates/ItemDetail';
 import { useDispatch } from 'react-redux';
 import { fetchUser } from './redux/users/operations';
+import { setItems_action } from './redux/products/operations';
 
 
 const App = () => {
@@ -20,7 +21,7 @@ const App = () => {
         <Header />
         <Switch>
           <Route exact path='/' component={ItemList} />
-          <Route exact path='/item-detail' component={ItemDetail} />
+          <Route exact path='/item-detail/:item_id' component={ItemDetail} />
         </Switch>
       </BrowserRouter>
     </div>

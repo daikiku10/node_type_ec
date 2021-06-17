@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import { setItems_action } from '../redux/products/operations';
 import { InitialState } from '../redux/store/initialState';
 import { makeStyles } from "@material-ui/core/styles";
@@ -77,32 +78,41 @@ const ItemList = () => {
         </Button>
       </div>
       <ol className={classes.cardList}>
-        {getItems.map(item => (
-          <li key={item.id} className={classes.card}>
-            <Card className={classes.root}>
-              <CardActionArea>
-                <CardMedia className={classes.media}>
-                  <img
-                    style={{ width: 345, height: 200 }}
-                    src={item.imgPath}
-                    alt="Logo"
-                  />
-                </CardMedia>
-                <CardContent>
-                  <div style={{ fontSize: 20, textAlign: "center" }}>
-                    {item.title}
-                  </div>
-                  <p style={{ fontSize: 16, textAlign: "center" }}>
-                    Mサイズ {item.priceM.toLocaleString()}円(税込)
-                  </p>
-                  <p style={{ fontSize: 16, textAlign: "center" }}>
-                    Lサイズ {item.priceL.toLocaleString()}円(税込)
-                  </p>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </li>
-        ))}
+        {getItems ? 
+        <>
+          {getItems.map(item => (
+            <li key={item.id} className={classes.card}>
+              <Link to={`/item-detail/${item.id}`}>
+                <Card className={classes.root}>
+                  <CardActionArea>
+                    <CardMedia className={classes.media}>
+                      <img
+                        style={{ width: 345, height: 200 }}
+                        src={item.imgPath}
+                        alt="Logo"
+                      />
+                    </CardMedia>
+                    <CardContent>
+                      <div style={{ fontSize: 20, textAlign: "center" }}>
+                        {item.title}
+                      </div>
+                      <p style={{ fontSize: 16, textAlign: "center" }}>
+                        Mサイズ {item.priceM.toLocaleString()}円(税込)
+                      </p>
+                      <p style={{ fontSize: 16, textAlign: "center" }}>
+                        Lサイズ {item.priceL.toLocaleString()}円(税込)
+                      </p>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Link>
+            </li>
+          ))}
+        </>
+        :
+        <>
+        </>
+        }
       </ol>
     </div>
   )

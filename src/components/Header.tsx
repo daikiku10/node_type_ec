@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Typography, Toolbar, Button } from "@material-ui/core";
 import {signIn, signOut} from '../redux/users/operations';
@@ -38,7 +39,9 @@ const Header = () => {
     <div className={classes.root}>
       <AppBar position="static" style={{color:"#fff"}}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title} >らくらくラーメン</Typography>
+          <Link to={'/'}>
+            <Typography variant="h6" className={classes.title} >らくらくラーメン</Typography>
+          </Link>
           <Button color="inherit">ショッピングカート</Button>
           <Button color="inherit">注文履歴</Button>
           {getUser ?

@@ -18,6 +18,14 @@ export type InitialState = {
       title: string
       price: number
     }[]
+
+    // カート商品
+    cart:{
+      orderId?: string
+      id: string
+      status: number
+      itemInfo: ItemInfo[]
+    }
   }
 
   // ユーザー関係
@@ -41,10 +49,26 @@ export type Topping = {
   price: number
 }
 
+export type CartItem = {
+  orderId?: string
+  id: string
+  status: number
+  itemInfo: ItemInfo[]
+}
+export type ItemInfo = {
+  itemId: number
+  buyNum: number
+  size: string
+  toppings:{
+    id: number
+  }[]
+}
+
 const initialState = {
   products: {
     items: [],
     toppings: [],
+    cart: ''
   },
   user: null,
 }
