@@ -5,6 +5,7 @@ import Header from './components/Header'
 import ItemList from './templates/ItemList';
 import ItemDetail from './templates/ItemDetail';
 import CartItemList from './templates/CartItemList';
+import OrderHistory from './templates/OrderHistory';
 import { useDispatch } from 'react-redux';
 import { fetchUser } from './redux/users/operations';
 
@@ -23,6 +24,7 @@ const App = () => {
           <Route exact path='/' component={ItemList} />
           <Route exact path='/item-detail/:item_id' component={ItemDetail} />
           <Route exact path='/cart-item-list' component={CartItemList} />
+          <Route exact path='/order-history' component={OrderHistory} />
         </Switch>
       </BrowserRouter>
     </div>

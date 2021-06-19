@@ -4,13 +4,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import CartTable from '../components/CartTable'
 import OrderForm from '../components/OrderForm'
 import { setCart_action, setItems_action, setToppings_action } from '../redux/products/operations'
-import { CartItem, InitialState, Item, ItemInfo, Topping } from '../redux/store/initialState'
+import { InitialState } from '../redux/store/initialState'
 
 const itemsSelector = (state: InitialState) => state.products.items
 const toppingsSelector = (state: InitialState) => state.products.toppings
 const userSelector = (state: InitialState) => state.user
 const cartSelector = (state: InitialState) => state.products.cart
-const ordersSelector = (state: InitialState) => state.products.orders
 
 
 const CartItemList = () => {
@@ -19,8 +18,6 @@ const CartItemList = () => {
   const getToppings = useSelector(toppingsSelector);
   const getUser = useSelector(userSelector);
   const getCart = useSelector(cartSelector);
-  const getOrders = useSelector(ordersSelector);
-  console.log(getOrders)
 
   useEffect(() => {
     dispatch(setItems_action());

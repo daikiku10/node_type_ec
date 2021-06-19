@@ -45,7 +45,9 @@ const Header = () => {
           <Link to={'/cart-item-list'}>
             <Button color="inherit">ショッピングカート</Button>
           </Link>
-          <Button color="inherit">注文履歴</Button>
+          <Link to={'/order-history'}>
+            <Button color="inherit">注文履歴</Button>
+          </Link>
           {getUser ?
           <Button color="inherit" onClick={logout}>ログアウト</Button>
           :
