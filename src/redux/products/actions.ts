@@ -1,6 +1,5 @@
-import { CartItem, ItemsList, ToppingsList } from "../store/initialState"
+import { CartItem, ItemsList, OrderData, ToppingsList } from "../store/initialState"
 import firebase from 'firebase';
-import { db } from '../../firebase/index';
 
 
 export const SET_ITEMS = 'SET_ITEMS'
@@ -55,5 +54,27 @@ export const addCart = (cartItem: CartItem):Readonly<{
   return {
     type: ADD_CART,
     payload: cartItem
+  }
+}
+
+export const SET_ORDERS = 'SET_ORDERS'
+export const setOrders = (orderData: firebase.firestore.DocumentData):Readonly<{
+  type: typeof SET_ORDERS
+  payload: firebase.firestore.DocumentData
+}> => {
+  return {
+    type: SET_ORDERS,
+    payload: orderData
+  }
+}
+
+export const ORDER = 'ORDER'
+export const order = (orderData: OrderData):Readonly<{
+  type: typeof ORDER
+  payload: OrderData
+}> => {
+  return {
+    type: ORDER,
+    payload: orderData
   }
 }

@@ -96,7 +96,7 @@ const ItemDetail = () => {
       }]
     }
     if(getUser){
-      if(getCart === undefined){
+      if(!getCart){
         dispatch(newCart_action(cartItem, getUser))
       } else {
         const copyCartItem: CartItem = getCart

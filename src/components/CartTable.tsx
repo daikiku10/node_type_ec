@@ -1,7 +1,7 @@
 import React from 'react'
-import { CartItem, InitialState, ItemsList, ToppingsList } from '../redux/store/initialState'
+import { CartItem, ItemsList, ToppingsList } from '../redux/store/initialState'
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import {Container, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,Box, Typography, List, ListItemText, IconButton} from '@material-ui/core';
+import {Container, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, List, ListItemText} from '@material-ui/core';
 
 
 interface Props {

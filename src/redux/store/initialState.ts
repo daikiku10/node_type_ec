@@ -26,6 +26,23 @@ export type InitialState = {
       status: number
       itemInfo: ItemInfo[]
     }
+
+    // 注文商品
+    orders: {
+      orderId?: string
+      id: string
+      status: number
+      itemInfo: ItemInfo[]
+      destinationName: string
+      destinationEmail: string
+      destinationZipcode: string
+      destinationAddress: string
+      tel: string
+      destinationTime: string
+      orderDate: string
+      paymentMethod: string
+      creditCardNo?: string
+    }[]
   }
 
   // ユーザー関係
@@ -64,11 +81,28 @@ export type ItemInfo = {
   }[]
 }
 
+export type OrderData = {
+  orderId: string
+  id: string
+  status: number
+  itemInfo: ItemInfo[]
+  destinationName: string
+  destinationEmail: string
+  destinationZipcode: string
+  destinationAddress: string
+  tel: string
+  destinationTime: string
+  orderDate: string
+  paymentMethod: string
+  creditCardNo: string
+}
+
 const initialState = {
   products: {
     items: [],
     toppings: [],
-    cart: ''
+    cart: '',
+    orders: []
   },
   user: null,
 }

@@ -2,8 +2,8 @@ import { Dispatch } from "react";
 import { Action } from "redux";
 import firebase from 'firebase';
 import { db } from '../../firebase/index';
-import { CartItem } from "../store/initialState";
-import { setItems, setToppings, newCart, setCart, addCart } from './actions';
+import { CartItem, OrderData } from "../store/initialState";
+import { setItems, setToppings, newCart, setCart, addCart, order, setOrders } from './actions';
 
 
 
@@ -37,7 +37,11 @@ export const setCart_action = (getUser: firebase.User) => {
       snapshot.forEach(item => {
         const cartItem = item.data()
         cartItem.orderId = item.id
-        dispatch(setCart(cartItem))
+        if (cartItem.status === 0){
+          dispatch(setCart(cartItem))
+        }else {
+          dispatch(setOrders(cartItem))
+        }
       })
     })
   }
@@ -56,6 +60,14 @@ export const addCart_action = (cartItem:CartItem, getUser: firebase.User) => {
   return async (dispatch: Dispatch<Action>) => {
     await db.collection(`users/${getUser.uid}/orders`).doc(cartItem.orderId).update(cartItem).then(() => {
       dispatch(addCart(cartItem))
+    })
+  }
+}
+
+export const order_action = (orderData: OrderData, getUser: firebase.User) => {
+  return async (dispatch: Dispatch<Action>) => {
+    await db.collection(`users/${getUser.uid}/orders`).doc(orderData.orderId).update(orderData).then(() => {
+      dispatch(order(orderData))
     })
   }
 }

@@ -10,6 +10,7 @@ const itemsSelector = (state: InitialState) => state.products.items
 const toppingsSelector = (state: InitialState) => state.products.toppings
 const userSelector = (state: InitialState) => state.user
 const cartSelector = (state: InitialState) => state.products.cart
+const ordersSelector = (state: InitialState) => state.products.orders
 
 
 const CartItemList = () => {
@@ -18,6 +19,8 @@ const CartItemList = () => {
   const getToppings = useSelector(toppingsSelector);
   const getUser = useSelector(userSelector);
   const getCart = useSelector(cartSelector);
+  const getOrders = useSelector(ordersSelector);
+  console.log(getOrders)
 
   useEffect(() => {
     dispatch(setItems_action());
@@ -38,7 +41,7 @@ const CartItemList = () => {
       <CartTable getCart={getCart} getItems={getItems} getToppings={getToppings}/>
       <Button onClick={() => setShow(!show)}>注文に進む</Button>
       {show ? 
-      <OrderForm />
+      <OrderForm/>
       :
       <></>
       }
