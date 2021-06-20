@@ -1,10 +1,10 @@
-import { Button } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import CartTable from '../components/CartTable'
 import OrderForm from '../components/OrderForm'
-import { setCart_action, setItems_action, setToppings_action } from '../redux/products/operations'
-import { InitialState } from '../redux/store/initialState'
+import { deleteCart_action, resetOrder_action, setCart_action, setItems_action, setToppings_action } from '../redux/products/operations'
+import { CartItem, InitialState } from '../redux/store/initialState'
+import { Button } from '@material-ui/core'
 
 const itemsSelector = (state: InitialState) => state.products.items
 const toppingsSelector = (state: InitialState) => state.products.toppings
@@ -22,6 +22,9 @@ const CartItemList = () => {
   useEffect(() => {
     dispatch(setItems_action());
     dispatch(setToppings_action());
+    return () => {
+      dispatch(resetOrder_action())
+    }
   }, [])
 
   useEffect(() => {
@@ -30,12 +33,21 @@ const CartItemList = () => {
     }
   }, [getUser])
 
+  const deleteBtn = (index: number) => {
+    let copyCart: CartItem  = getCart
+    copyCart.itemInfo.splice(index, 1)
+    if(getUser){
+      dispatch(deleteCart_action(copyCart, getUser))
+    }
+  }
+  
+
   // 注文に進む際のトリガー処理
   const [show, setShow] = useState<boolean>(false)
   return (
     <div>
       <p>ショッピングカート</p>
-      <CartTable getCart={getCart} getItems={getItems} getToppings={getToppings}/>
+      <CartTable getCart={getCart} getItems={getItems} getToppings={getToppings} deleteBtn={deleteBtn}/>
       <Button onClick={() => setShow(!show)}>注文に進む</Button>
       {show ? 
       <OrderForm/>

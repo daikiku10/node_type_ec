@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCart_action } from '../redux/products/operations';
+import { setCart_action, resetOrder_action } from '../redux/products/operations';
 import { InitialState } from '../redux/store/initialState';
 
 const ordersSelector = (state: InitialState) => state.products.orders
@@ -14,6 +14,10 @@ const OrderHistory = () => {
   useEffect(() => {
     if(getUser){
       dispatch(setCart_action(getUser))
+      return () => {
+        dispatch(resetOrder_action())
+      } 
+      
     }
   }, [getUser])
 

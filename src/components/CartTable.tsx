@@ -8,6 +8,7 @@ interface Props {
   getItems: ItemsList
   getToppings: ToppingsList
   getCart: CartItem | undefined
+  deleteBtn: any
 }
 
 const StyledTableCell = withStyles((theme) => ({
@@ -33,7 +34,8 @@ const useStyles = makeStyles({
 });
 
 
-const CartTable = ({getCart, getItems, getToppings}: Props) => {
+
+const CartTable = ({getCart, getItems, getToppings, deleteBtn}: Props) => {
   const classes = useStyles();
   return (
     <Container maxWidth="md">
@@ -88,7 +90,7 @@ const CartTable = ({getCart, getItems, getToppings}: Props) => {
                           </React.Fragment>
                         ))}
                       </StyledTableCell>
-                      <StyledTableCell align="center"><Button style={{ color: "#fff", backgroundColor: "#CF000D"}}>削除</Button></StyledTableCell>
+                      <StyledTableCell align="center"><Button style={{ color: "#fff", backgroundColor: "#CF000D"}}  onClick={() => deleteBtn(index)}>削除</Button></StyledTableCell>
                     </React.Fragment>
                   ))}
                 </StyledTableRow>

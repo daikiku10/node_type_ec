@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ChangeEvent } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { addCart_action, newCart_action, setCart_action, setItems_action, setToppings_action } from '../redux/products/operations'
 import { CartItem, InitialState, Item, ItemInfo, Topping } from '../redux/store/initialState'
 import { makeStyles } from "@material-ui/core/styles";
@@ -31,12 +31,13 @@ const useStyles = makeStyles({
 
 const ItemDetail = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const handleLink = (path: any) => history.push(path)
   const classes = useStyles();
   const getItems = useSelector(itemsSelector);
   const getToppings = useSelector(toppingsSelector);
   const getUser = useSelector(userSelector);
   const getCart = useSelector(cartSelector);
-  console.log(getCart)
   const {item_id} = useParams<ItemDetailParams>();
   const item_id_num: number = Number(item_id);
 
@@ -98,6 +99,7 @@ const ItemDetail = () => {
     if(getUser){
       if(!getCart){
         dispatch(newCart_action(cartItem, getUser))
+        handleLink('/cart-item-list')
       } else {
         const copyCartItem: CartItem = getCart
         let addItemInfo: ItemInfo[] = [...copyCartItem.itemInfo, cartItem.itemInfo[0]]
@@ -108,6 +110,7 @@ const ItemDetail = () => {
           itemInfo: addItemInfo
         }
         dispatch(addCart_action(addCartData, getUser))
+        handleLink('/cart-item-list')
       }
     }
   }

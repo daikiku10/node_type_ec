@@ -57,6 +57,17 @@ export const addCart = (cartItem: CartItem):Readonly<{
   }
 }
 
+export const DELETE_CART = 'DELETE_CART'
+export const deleteCart = (cartItem: CartItem):Readonly<{
+  type: typeof DELETE_CART
+  payload: CartItem
+}> => {
+  return {
+    type: DELETE_CART,
+    payload: cartItem
+  }
+}
+
 export const SET_ORDERS = 'SET_ORDERS'
 export const setOrders = (orderData: firebase.firestore.DocumentData):Readonly<{
   type: typeof SET_ORDERS
@@ -76,5 +87,14 @@ export const order = (orderData: OrderData):Readonly<{
   return {
     type: ORDER,
     payload: orderData
+  }
+}
+
+export const RESET_ORDER = 'RESET_ORDER'
+export const resetOrder = ():Readonly<{
+  type: typeof RESET_ORDER
+}> => {
+  return {
+    type: RESET_ORDER
   }
 }

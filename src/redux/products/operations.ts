@@ -3,7 +3,7 @@ import { Action } from "redux";
 import firebase from 'firebase';
 import { db } from '../../firebase/index';
 import { CartItem, OrderData } from "../store/initialState";
-import { setItems, setToppings, newCart, setCart, addCart, order, setOrders } from './actions';
+import { setItems, setToppings, newCart, setCart, addCart, deleteCart, order, setOrders, resetOrder } from './actions';
 
 
 
@@ -64,10 +64,24 @@ export const addCart_action = (cartItem:CartItem, getUser: firebase.User) => {
   }
 }
 
+export const deleteCart_action = (cartItem:CartItem, getUser: firebase.User) => {
+  return async (dispatch: Dispatch<Action>) => {
+    await db.collection(`users/${getUser.uid}/orders`).doc(cartItem.orderId).update(cartItem).then(() => {
+      dispatch(deleteCart(cartItem))
+    })
+  }
+}
+
 export const order_action = (orderData: OrderData, getUser: firebase.User) => {
   return async (dispatch: Dispatch<Action>) => {
     await db.collection(`users/${getUser.uid}/orders`).doc(orderData.orderId).update(orderData).then(() => {
       dispatch(order(orderData))
     })
+  }
+}
+
+export const resetOrder_action = () => {
+  return async (dispatch: Dispatch<Action>) => {
+    await dispatch(resetOrder())
   }
 }
