@@ -13,7 +13,6 @@ import { fetchUser } from './redux/users/operations';
 
 const App = () => {
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(fetchUser());
   },[])

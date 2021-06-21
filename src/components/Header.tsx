@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Typography, Toolbar, Button } from "@material-ui/core";
@@ -23,16 +24,20 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
+  const handleLink = (path: any) => history.push(path)
   const getUser = useSelector(userSelector)
 
   // ログインの処理
   const login = ():void => {
     dispatch(signIn());
+    handleLink('/');
   }
 
   // ログアウトの処理
   const logout = ():void => {
     dispatch(signOut());
+    handleLink('/');
   }
 
   return (

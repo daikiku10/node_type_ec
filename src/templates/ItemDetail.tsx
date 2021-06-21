@@ -21,7 +21,6 @@ const useStyles = makeStyles({
     margin: "50px 50px 100px 50px",
     width: "200"
   },
-
   form: {
     margin: "20px 0 0 0",
     width: "60%"
@@ -49,7 +48,7 @@ const ItemDetail = () => {
     }
   }, [])
   
-  // // パラメーターに一致した商品を使う
+  // パラメーターに一致した商品を使う
   let item:any = ''
   if(getItems !== undefined){
     getItems.forEach((getItem) => {
@@ -71,7 +70,6 @@ const ItemDetail = () => {
     if (e.target.checked) {
       let selectTopping = [...selectToppings, {id: Number(e.target.value)}]
       setSelectToppings(selectTopping)
-
     } else if (!e.target.checked) {
       let selectTopping = selectToppings.filter(value => value.id !== Number(e.target.value))
       setSelectToppings(selectTopping)
@@ -109,6 +107,22 @@ const ItemDetail = () => {
           status: 0,
           itemInfo: addItemInfo
         }
+        dispatch(addCart_action(addCartData, getUser))
+        handleLink('/cart-item-list')
+      }
+    }else {
+      if(!getCart){
+        dispatch(newCart_action(cartItem, getUser))
+        handleLink('/cart-item-list')
+      } else {
+        const copyCartItem: CartItem = getCart
+        let addItemInfo: ItemInfo[] = [...copyCartItem.itemInfo, cartItem.itemInfo[0]]
+        let addCartData: CartItem = {
+          id: getCart.id,
+          orderId: getCart.orderId,
+          status: 0,
+          itemInfo: addItemInfo
+        }  
         dispatch(addCart_action(addCartData, getUser))
         handleLink('/cart-item-list')
       }

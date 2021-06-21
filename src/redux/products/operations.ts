@@ -47,28 +47,40 @@ export const setCart_action = (getUser: firebase.User) => {
   }
 } 
 
-export const newCart_action = (cartItem:CartItem, getUser: firebase.User) => {
+export const newCart_action = (cartItem:CartItem, getUser: firebase.User | null) => {
   return async (dispatch: Dispatch<Action>) => {
-    await db.collection(`users/${getUser.uid}/orders`).add(cartItem).then(doc => {
-      cartItem.orderId = doc.id
+    if(getUser){
+      await db.collection(`users/${getUser.uid}/orders`).add(cartItem).then(doc => {
+        cartItem.orderId = doc.id
+        dispatch(newCart(cartItem))
+      })
+    } else {
       dispatch(newCart(cartItem))
-    })
+    }
   }
 }
 
-export const addCart_action = (cartItem:CartItem, getUser: firebase.User) => {
+export const addCart_action = (cartItem:CartItem, getUser: firebase.User | null) => {
   return async (dispatch: Dispatch<Action>) => {
-    await db.collection(`users/${getUser.uid}/orders`).doc(cartItem.orderId).update(cartItem).then(() => {
+    if(getUser){
+      await db.collection(`users/${getUser.uid}/orders`).doc(cartItem.orderId).update(cartItem).then(() => {
+        dispatch(addCart(cartItem))
+      })
+    } else {
       dispatch(addCart(cartItem))
-    })
+    }
   }
 }
 
-export const deleteCart_action = (cartItem:CartItem, getUser: firebase.User) => {
+export const deleteCart_action = (cartItem:CartItem, getUser: firebase.User | null) => {
   return async (dispatch: Dispatch<Action>) => {
-    await db.collection(`users/${getUser.uid}/orders`).doc(cartItem.orderId).update(cartItem).then(() => {
+    if(getUser){
+      await db.collection(`users/${getUser.uid}/orders`).doc(cartItem.orderId).update(cartItem).then(() => {
+        dispatch(deleteCart(cartItem))
+      })
+    } else {
       dispatch(deleteCart(cartItem))
-    })
+    }
   }
 }
 

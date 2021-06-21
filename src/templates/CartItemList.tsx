@@ -36,9 +36,7 @@ const CartItemList = () => {
   const deleteBtn = (index: number) => {
     let copyCart: CartItem  = getCart
     copyCart.itemInfo.splice(index, 1)
-    if(getUser){
-      dispatch(deleteCart_action(copyCart, getUser))
-    }
+    dispatch(deleteCart_action(copyCart, getUser))
   }
   
 
@@ -48,9 +46,12 @@ const CartItemList = () => {
     <div>
       <p>ショッピングカート</p>
       <CartTable getCart={getCart} getItems={getItems} getToppings={getToppings} deleteBtn={deleteBtn}/>
-      { getCart ? <Button onClick={() => setShow(!show)}>注文に進む</Button> : <></>}
+      { getCart ? 
+        <>
+        {getUser ? <Button onClick={() => setShow(!show)}>注文に進む</Button> : <></> }
+        </> : <></>}
       {show ? 
-      <OrderForm/>
+      <OrderForm />
       :
       <></>
       }
