@@ -45,10 +45,36 @@ const ItemList = () => {
   const getUser = useSelector(userSelector)
   const getItems = useSelector(itemsSelector);
   const classes = useStyles();
+  const [itemsArray, setItemsArray] = useState(getItems)
+  const [mozi, setMozi] = useState<string>("")
 
   useEffect(() => {
     dispatch(setItems_action());
   },[getUser])
+
+  useEffect(() => {
+    setItemsArray(getItems)
+  }, [getItems])
+
+  // 検索処理
+  const searchWord = () => {
+    setItemsArray(getItems);
+    let searchArray = getItems.filter((item) => {
+      return 0 <= item.title.indexOf(mozi);
+    })
+    if (searchArray.length === 0){
+      setItemsArray(getItems)
+    } else {
+      setItemsArray(searchArray)
+    }
+  }
+
+  // クリアボタンの処理
+  const clearBtn = () => {
+    setMozi("")
+    setItemsArray(getItems)
+  }
+
   
   return (
     <div>
@@ -59,11 +85,14 @@ const ItemList = () => {
           label="Search Noodle"
           variant="filled"
           autoComplete="off"
+          value={mozi}
+          onChange={(e) => setMozi(e.target.value)}
         />
         <Button
           className={classes.buttonSearch}
           variant="contained"
           style={{ color: "#fff"}}
+          onClick={searchWord}
         >
           検索
           <SearchIcon />
@@ -72,15 +101,16 @@ const ItemList = () => {
           className={classes.buttonClear}
           variant="contained"
           style={{ color: "#fff"}}
+          onClick={clearBtn}
         >
           クリア
           <DeleteIcon />
         </Button>
       </div>
       <ol className={classes.cardList}>
-        {getItems ? 
+        {itemsArray ? 
         <>
-          {getItems.map(item => (
+          {itemsArray.map(item => (
             <li key={item.id} className={classes.card}>
               <Link to={`/item-detail/${item.id}`}>
                 <Card className={classes.root}>
