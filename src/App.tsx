@@ -6,6 +6,7 @@ import ItemList from './templates/ItemList';
 import ItemDetail from './templates/ItemDetail';
 import CartItemList from './templates/CartItemList';
 import OrderHistory from './templates/OrderHistory';
+import OrderComplete from './templates/OrderComplete';
 import { useDispatch } from 'react-redux';
 import { fetchUser } from './redux/users/operations';
 
@@ -25,6 +26,7 @@ const App = () => {
           <Route exact path='/item-detail/:item_id' component={ItemDetail} />
           <Route exact path='/cart-item-list' component={CartItemList} />
           <Route exact path='/order-history' component={OrderHistory} />
+          <Route exact path='/order-complete' component={OrderComplete} />
         </Switch>
       </BrowserRouter>
     </div>

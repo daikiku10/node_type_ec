@@ -70,7 +70,7 @@ export const ProductsReducer = (state = initialState.products, action:
         return {
           items: [...state.items],
           toppings: [...state.toppings],
-          cart : state.cart,
+          cart : "",
           orders:[...state.orders, action.payload]
         }
       case Action.RESET_ORDER:

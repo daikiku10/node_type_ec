@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-
+import { useHistory } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form'
 import { Box, Button, FormControl, Menu, MenuItem, Select, TextField, InputLabel, FormHelperText } from '@material-ui/core';
 import { CartItem, InitialState, OrderData } from '../redux/store/initialState';
@@ -13,6 +13,8 @@ const OrderForm = () => {
   const {register, handleSubmit, watch, formState:{errors}} = useForm<OrderData>();
   const selectPay = watch("paymentMethod")
   const dispatch = useDispatch();
+  const history = useHistory();
+  const handleLink = (path: any) => history.push(path)
   const getUser = useSelector(userSelector);
   const getCart = useSelector(cartSelector);
 
@@ -76,6 +78,8 @@ const OrderForm = () => {
     }
     if(getUser) {
       dispatch(order_action(data, getUser))
+      handleLink('/order-complete')
+
     }
     console.log(data)
   });

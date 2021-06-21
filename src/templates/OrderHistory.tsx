@@ -78,8 +78,8 @@ const OrderHistory = () => {
         <div>
           {getOrders.filter((order) => {
             return order.status === 1
-          }).map((orderData) => (
-            <List className={classes.orderList} key={orderData.orderId}>
+          }).map((orderData, index1) => (
+            <List className={classes.orderList} key={index1}>
               <div>注文日時：{orderData.orderDate}</div>
               {orderData.itemInfo.map((data, index) => (
                 <List key={index}>
@@ -117,8 +117,8 @@ const OrderHistory = () => {
           ))}
           {getOrders.filter((order) => {
             return order.status === 2
-          }).map((orderData) => (
-            <List className={classes.orderList} key={orderData.orderId}>
+          }).map((orderData, index1) => (
+            <List className={classes.orderList} key={index1}>
               <div>注文日時：{orderData.orderDate}</div>
               {orderData.itemInfo.map((data, index) => (
                 <List key={index}>
@@ -156,8 +156,8 @@ const OrderHistory = () => {
           ))}
           {getOrders.filter((order) => {
             return order.status === 9
-          }).map((orderData) => (
-            <List className={classes.orderList} key={orderData.orderId}>
+          }).map((orderData, index1) => (
+            <List className={classes.orderList} key={index1}>
               <div>注文日時：{orderData.orderDate}</div>
               {orderData.itemInfo.map((data, index) => (
                 <List key={index}>
