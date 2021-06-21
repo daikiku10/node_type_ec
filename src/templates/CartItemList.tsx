@@ -48,7 +48,7 @@ const CartItemList = () => {
     <div>
       <p>ショッピングカート</p>
       <CartTable getCart={getCart} getItems={getItems} getToppings={getToppings} deleteBtn={deleteBtn}/>
-      <Button onClick={() => setShow(!show)}>注文に進む</Button>
+      { getCart ? <Button onClick={() => setShow(!show)}>注文に進む</Button> : <></>}
       {show ? 
       <OrderForm/>
       :

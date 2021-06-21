@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CartItem, ItemsList, ToppingsList } from '../redux/store/initialState'
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import {Container, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, List, ListItemText} from '@material-ui/core';
+import {Container, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, List, ListItemText, Box} from '@material-ui/core';
 
 
 interface Props {
@@ -37,6 +37,39 @@ const useStyles = makeStyles({
 
 const CartTable = ({getCart, getItems, getToppings, deleteBtn}: Props) => {
   const classes = useStyles();
+  const [price, setPrice] = useState<number>(0);
+  const [toppingPrice, setToppingPrice] =useState<number>(0);
+  // 合計金額の処理
+  useEffect(() => {
+    let price = 0
+    if(getCart){
+      getCart.itemInfo.map(data => (
+        getItems.filter(itemData => { return data.itemId === itemData.id 
+        }).map(item => (
+          (data.size === "M" ? price += item.priceM * data.buyNum : price += item.priceL * data.buyNum)
+        ))
+      ))
+    }
+    console.log('合計処理')
+    setPrice(price)
+  },[getCart,deleteBtn])
+  // トッピング合計金額
+  useEffect(() => {
+    let toppingPr = 0
+    if(getCart){
+      getCart.itemInfo.map(data => (
+        data.toppings.map(topping => (
+          getToppings.filter(top => {return topping.id === top.id
+          }).map(to => (
+            toppingPr += to.price * data.buyNum
+          ))
+        ))
+      ))
+    }
+    setToppingPrice(toppingPr)
+  },[getCart,deleteBtn])
+  
+
   return (
     <Container maxWidth="md">
       {getCart ? 
@@ -97,6 +130,10 @@ const CartTable = ({getCart, getItems, getToppings, deleteBtn}: Props) => {
               ))}
             </TableBody>
           </Table>
+          <Box mt={2} mb={2}>
+            <Typography variant="h5" align="center">消費税：{Math.floor((price + toppingPrice) * 0.1 / 1.1)}円</Typography>
+            <Typography variant="h5" align="center">合計金額：{price + toppingPrice}円</Typography>
+          </Box>
         </TableContainer>
       :
       <Typography>カート商品がありません！</Typography>

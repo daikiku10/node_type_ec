@@ -115,6 +115,23 @@ const ItemDetail = () => {
     }
   }
 
+  // 選んだトッピング（奇数）
+  let toppingNum_ki: number = 0
+  let selectToppingArray1: {id: number}[] = selectToppings.filter(topping => topping.id % 2 !== 0)
+  toppingNum_ki = selectToppingArray1.length;
+  // 選んだトッピング（偶数）
+  let toppingNum_guu: number = 0
+  let selectToppingArray2: {id: number}[] = selectToppings.filter(topping => topping.id % 2 === 0)
+  toppingNum_guu = selectToppingArray2.length;
+  // 合計金額
+  let addPrice = item.priceM
+  if (size === 'M') {
+      addPrice = item.priceM * Number(buyNum) + ((200 * (toppingNum_ki * Number(buyNum))) + ((300 * toppingNum_guu * Number(buyNum))))
+    } else if (size === 'L') {
+      addPrice = item.priceL * Number(buyNum) + ((200 * (toppingNum_ki * Number(buyNum))) + ((300 * toppingNum_guu * Number(buyNum))))
+    }
+
+
 
   return (
     <React.Fragment>
@@ -165,7 +182,7 @@ const ItemDetail = () => {
             />
           </div>
           <Box textAlign="center" className={classes.form}>
-            <h2>ご注文金額合計：　円(税込)</h2>
+            <h2>ご注文金額合計： {addPrice.toLocaleString()}円(税込)</h2>
             <Button variant='contained' style={{ color: "#fff", backgroundColor: "#CF000D" }} onClick={addCartBtn}>
             カートに入れる
             </Button>
