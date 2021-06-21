@@ -10,7 +10,8 @@ export const ProductsReducer = (state = initialState.products, action:
   ReturnType<typeof Action.order> |
   ReturnType<typeof Action.setOrders> |
   ReturnType<typeof Action.resetOrder> |
-  ReturnType<typeof Action.deleteCart>
+  ReturnType<typeof Action.deleteCart> |
+  ReturnType<typeof Action.cancelOrder>
   ) => {
     switch (action.type) {
       case Action.SET_ITEMS:
@@ -78,6 +79,13 @@ export const ProductsReducer = (state = initialState.products, action:
           toppings: [...state.toppings],
           cart : state.cart,
           orders: []
+        }
+      case Action.CANCEL_ORDER:
+        return {
+          items: [...state.items],
+          toppings: [...state.toppings],
+          cart : state.cart,
+          orders: [...state.orders]
         }
       default:
         return state

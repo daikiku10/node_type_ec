@@ -98,3 +98,14 @@ export const resetOrder = ():Readonly<{
     type: RESET_ORDER
   }
 }
+
+export const CANCEL_ORDER = 'CANCEL_ORDER'
+export const cancelOrder = (orderData: OrderData):Readonly<{
+  type: typeof CANCEL_ORDER
+  payload: OrderData
+}> => {
+  return {
+    type: CANCEL_ORDER,
+    payload: orderData
+  }
+}

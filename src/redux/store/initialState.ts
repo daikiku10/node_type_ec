@@ -29,7 +29,7 @@ export type InitialState = {
 
     // 注文商品
     orders: {
-      orderId?: string
+      orderId: string
       id: string
       status: number
       itemInfo: ItemInfo[]
@@ -41,7 +41,7 @@ export type InitialState = {
       destinationTime: string
       orderDate: string
       paymentMethod: string
-      creditCardNo?: string
+      creditCardNo: string
     }[]
   }
 
