@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import createStore from '../../redux/store/store';
 import Header from '../../components/Header';
-import userEvent from '@testing-library/user-event';
 
 describe('ヘッダーコンポーネントのテスト',() => {
   beforeEach(() => {

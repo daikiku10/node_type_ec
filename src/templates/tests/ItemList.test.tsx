@@ -22,7 +22,10 @@ describe('商品一覧ページのテスト', () => {
     // テキストボックス（<input />）要素の取得
     expect(screen.getByRole('textbox')).toBeInTheDocument();
 
+    const input = screen.getByLabelText('Search Noodle');
     userEvent.type(screen.getByRole('textbox'), 'とんこつラーメン');
+    expect(input).toHaveDisplayValue('とんこつラーメン');
+
     // fireEvent.change(screen.getByRole('textbox'), {
     //   target: { value: 'とんこつラーメン'}
     // });
