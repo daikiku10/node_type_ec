@@ -1,20 +1,8 @@
-// import React from 'react';
-// import { render, screen } from '@testing-library/react';
-// import App from './App';
-
-// test('renders learn react link', () => {
-//   render(<App />);
-//   const linkElement = screen.getByText(/learn react/i);
-//   expect(linkElement).toBeInTheDocument();
-// });
-
-
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import App from './App';
 import { Provider } from 'react-redux';
-import createStore from './redux/store/store';
-import ItemList from './templates/ItemList';
+import createStore from '../../redux/store/store';
+import ItemList from '../../templates/ItemList';
 import userEvent from '@testing-library/user-event';
 
 describe('商品一覧ページのテスト', () => {
@@ -38,7 +26,6 @@ describe('商品一覧ページのテスト', () => {
     // fireEvent.change(screen.getByRole('textbox'), {
     //   target: { value: 'とんこつラーメン'}
     // });
-
 
     // ↓は動作しない。テキストの要素を持たないことを示すが、getByはエラーをスローしてアサーションを妨げてしまうため。
     // この場合にqueryByを使用する
