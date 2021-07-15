@@ -5,6 +5,7 @@ import OrderForm from '../components/OrderForm'
 import { deleteCart_action, resetOrder_action, setCart_action, setItems_action, setToppings_action } from '../redux/products/operations'
 import { CartItem, InitialState } from '../redux/store/initialState'
 import { Button } from '@material-ui/core'
+import Inner from '../components/inner/Inner'
 
 const itemsSelector = (state: InitialState) => state.products.items
 const toppingsSelector = (state: InitialState) => state.products.toppings
@@ -43,7 +44,7 @@ const CartItemList = () => {
   // 注文に進む際のトリガー処理
   const [show, setShow] = useState<boolean>(false)
   return (
-    <div>
+    <Inner>
       <p>ショッピングカート</p>
       <CartTable getCart={getCart} getItems={getItems} getToppings={getToppings} deleteBtn={deleteBtn}/>
       { getCart ? 
@@ -55,7 +56,7 @@ const CartItemList = () => {
       :
       <></>
       }
-    </div>
+    </Inner>
   )
 }
 

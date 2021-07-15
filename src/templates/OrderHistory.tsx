@@ -4,6 +4,7 @@ import { setCart_action, resetOrder_action, setItems_action, setToppings_action,
 import { InitialState, OrderData } from '../redux/store/initialState';
 import {makeStyles} from "@material-ui/core/styles";
 import { Button, Grid, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
+import Inner from '../components/inner/Inner';
 
 
 const itemsSelector = (state: InitialState) => state.products.items
@@ -72,7 +73,7 @@ const OrderHistory = () => {
   }
 
   return (
-    <>
+    <Inner>
       <p>注文履歴</p>
       {getOrders.length > 0 ? (
         <div>
@@ -195,7 +196,7 @@ const OrderHistory = () => {
           ))}
         </div>
       ):(<>注文履歴がありません</>)}
-    </>
+    </Inner>
   )
 }
 

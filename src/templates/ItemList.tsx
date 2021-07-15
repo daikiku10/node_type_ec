@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import {Button, Card, CardActionArea, CardContent, CardMedia, TextField,} from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import DeleteIcon from "@material-ui/icons/Delete";
+import Inner from '../components/inner/Inner';
 
 
 const itemsSelector = (state: InitialState) => state.products.items
@@ -77,7 +78,7 @@ const ItemList = () => {
 
   
   return (
-    <div>
+    <Inner>
       <div style={{ textAlign: "center" }}>
         <TextField
           className={classes.input}
@@ -144,7 +145,7 @@ const ItemList = () => {
         </>
         }
       </ol>
-    </div>
+    </Inner>
   )
 }
 

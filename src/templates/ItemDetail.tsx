@@ -5,6 +5,7 @@ import { addCart_action, newCart_action, setCart_action, setItems_action, setTop
 import { CartItem, InitialState, Item, ItemInfo, Topping } from '../redux/store/initialState'
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, TextField, Box } from "@material-ui/core";
+import Inner from '../components/inner/Inner';
 
 
 const itemsSelector = (state: InitialState) => state.products.items
@@ -148,7 +149,7 @@ const ItemDetail = () => {
 
 
   return (
-    <React.Fragment>
+    <Inner>
       {item === '' ? <></>:
       <div className={classes.grid}>
         <Grid container justify='center'>
@@ -204,7 +205,7 @@ const ItemDetail = () => {
         </Grid>
       </div>
       }
-    </React.Fragment>
+    </Inner>
   )
 }
 
