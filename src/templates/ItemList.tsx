@@ -4,10 +4,9 @@ import { Link, useHistory } from 'react-router-dom';
 import { setItems_action } from '../redux/products/operations';
 import { InitialState } from '../redux/store/initialState';
 import { makeStyles } from "@material-ui/core/styles";
-import {Button, Card, CardActionArea, CardContent, CardMedia, TextField,} from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { Card, CardActionArea, CardContent, CardMedia, } from "@material-ui/core";
 import Inner from '../components/inner/Inner';
+import { ColorButton, InputField } from '../components/atoms';
 
 
 const itemsSelector = (state: InitialState) => state.products.items
@@ -80,7 +79,7 @@ const ItemList = () => {
   return (
     <Inner>
       <div style={{ textAlign: "center" }}>
-        <TextField
+        {/* <TextField
           className={classes.input}
           id="filled-basic"
           label="Search Noodle"
@@ -88,25 +87,22 @@ const ItemList = () => {
           autoComplete="off"
           value={mozi}
           onChange={(e) => setMozi(e.target.value)}
+        /> */}
+        <InputField
+          label={"ラーメン検索"}
         />
-        <Button
-          className={classes.buttonSearch}
-          variant="contained"
-          style={{ color: "#fff"}}
-          onClick={searchWord}
-        >
-          検索
-          <SearchIcon />
-        </Button>
-        <Button
-          className={classes.buttonClear}
-          variant="contained"
-          style={{ color: "#fff"}}
-          onClick={clearBtn}
-        >
-          クリア
-          <DeleteIcon />
-        </Button>
+        <ColorButton 
+          label={"検索"}
+          background={"#CF000D"}
+          color={"#fff"}
+          onClick={() => console.log('検索')}
+        />
+        <ColorButton
+          label={"クリア"}
+          background={"#CF000D"}
+          color={"#fff"}
+          onClick={() => console.log('クリア')}
+         />
       </div>
       <ol className={classes.cardList}>
         {itemsArray ? 
