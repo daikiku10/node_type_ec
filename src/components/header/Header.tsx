@@ -1,6 +1,9 @@
 import React, { FC } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { IconButtonSelect, icon } from "../atoms/IconButtonSelect";
+import {signIn, signOut} from '../../redux/users/operations';
+
 
 // MaterialUI
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -79,7 +82,17 @@ const Header: FC = () => {
   const handleClick = (link: string): void => {
     history.push(link);
   };
+  // 仮定義
+  const dispatch = useDispatch();
 
+  // 仮ログイン処理
+  const login = (): void =>{
+    dispatch(signIn());
+  }
+  // 仮ログアウト処理
+  const logout = (): void => {
+    dispatch(signOut());
+  }
   return (
     <div className={classes.grow}>
       <AppBar position="fixed" style={{ background: "#CF000D" }}>
@@ -115,6 +128,7 @@ const Header: FC = () => {
               <div className={classes.menu} key={index}>
                 <IconButtonSelect
                   icon={login.icon}
+                  onClick={() => logout()}
                 />ログアウト
               </div>
             ))}
@@ -122,6 +136,7 @@ const Header: FC = () => {
               <div className={classes.menu} key={index}>
                 <IconButtonSelect
                   icon={logout.icon}
+                  onClick={() => login()}
                 />ログイン
               </div>
             ))
