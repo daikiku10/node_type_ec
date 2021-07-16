@@ -3,11 +3,23 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const cors = require('cors');
+const mongoose = require('mongoose');
+
+require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+    optionsSuccessStatus: 200,
+  })
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -18,6 +30,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// mongoDBと接続
+const uri = 'mongodb+srv://ec-user:lTe11vK8nDgdUvtH@ec-item.pdku4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true })
+
+const connection = mongoose.connection;
+connection.once('open', () => {
+  console.log("MongoDB database connection established successfully")
+})
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
