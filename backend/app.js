@@ -10,6 +10,8 @@ require('dotenv').config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var itemsRouter = require('./routes/items');
+var toppingsRouter = require('./routes/toppings');
 
 var app = express();
 
@@ -32,7 +34,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // mongoDBと接続
-const uri = 'mongodb+srv://ec-user:lTe11vK8nDgdUvtH@ec-item.pdku4.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const uri = process.env.ATLAS_URI
 mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true })
 
 const connection = mongoose.connection;
@@ -42,6 +44,8 @@ connection.once('open', () => {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/items', itemsRouter);
+app.use('/toppings', toppingsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

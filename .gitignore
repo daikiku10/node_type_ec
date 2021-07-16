@@ -128,3 +128,4 @@ yarn-error.log*
 
 # 自分で追加のファイル
 .vscode
+.env

@@ -92,13 +92,6 @@ const ItemList = () => {
           label={"ラーメン検索"}
         />
         <ColorButton 
-          label={"商品追加"}
-          background={"#CF000D"}
-          color={"#fff"}
-          onClick={() => console.log('アイテム、商品追加')}
-        />
-
-        <ColorButton 
           label={"検索"}
           background={"#CF000D"}
           color={"#fff"}
