@@ -6,6 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, Typography, Toolbar, Button } from "@material-ui/core";
 import {signIn, signOut} from '../redux/users/operations';
 import { InitialState } from '../redux/store/initialState';
+import { useAppDispatch } from '../app/hooks';
+import { loginAsync, logoutAsync } from '../features/user/userSlice';
 
 const userSelector = (state: InitialState) => state.user
 
@@ -24,19 +26,20 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const dispatch2 = useAppDispatch();
   const history = useHistory();
   const handleLink = (path: any) => history.push(path)
   const getUser = useSelector(userSelector)
 
   // ログインの処理
   const login = ():void => {
-    dispatch(signIn());
+    dispatch2(loginAsync());
     handleLink('/');
   }
 
   // ログアウトの処理
   const logout = ():void => {
-    dispatch(signOut());
+    dispatch2(logoutAsync());
     handleLink('/');
   }
 

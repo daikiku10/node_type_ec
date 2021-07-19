@@ -2,13 +2,14 @@ import React, { FC } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { IconButtonSelect, icon } from "../atoms/IconButtonSelect";
-import {signIn, signOut} from '../../redux/users/operations';
+import { useAppDispatch } from "../../app/hooks";
 
 
 // MaterialUI
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { ClassNameMap } from "@material-ui/styles";
 import { AppBar, Container, Toolbar, Typography, Grid, } from "@material-ui/core";
+import { loginAsync, logoutAsync } from "../../features/user/userSlice";
 
 const headers = {
   logins: [{
@@ -83,15 +84,15 @@ const Header: FC = () => {
     history.push(link);
   };
   // 仮定義
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // 仮ログイン処理
   const login = (): void =>{
-    dispatch(signIn());
+    dispatch(loginAsync());
   }
   // 仮ログアウト処理
   const logout = (): void => {
-    dispatch(signOut());
+    dispatch(logoutAsync());
   }
   return (
     <div className={classes.grow}>
