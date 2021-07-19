@@ -13,7 +13,7 @@ import { fetchAllItemsAsync } from './features/item/itemsSlice';
 import { selectItems } from './features/item/itemsSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { auth } from './firebase';
-import { getUserAsync, selectUser, unsetUser } from './features/user/userSlice';
+import { getUserAsync, unsetUser } from './features/user/userSlice';
 
 
 const App = () => {
@@ -30,8 +30,6 @@ const App = () => {
   },[])
   
   const items = useAppSelector(selectItems);
-  const getUser = useAppSelector(selectUser);
-  console.log(getUser)
   console.log(items)
   return (
     //  testコメント

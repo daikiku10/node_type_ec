@@ -1,15 +1,13 @@
 import React, { FC } from "react";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { IconButtonSelect, icon } from "../atoms/IconButtonSelect";
-import { useAppDispatch } from "../../app/hooks";
-
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
 
 // MaterialUI
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { ClassNameMap } from "@material-ui/styles";
 import { AppBar, Container, Toolbar, Typography, Grid, } from "@material-ui/core";
-import { loginAsync, logoutAsync } from "../../features/user/userSlice";
+import { loginAsync, logoutAsync, selectUser } from "../../features/user/userSlice";
 
 const headers = {
   logins: [{
@@ -83,14 +81,15 @@ const Header: FC = () => {
   const handleClick = (link: string): void => {
     history.push(link);
   };
-  // 仮定義
   const dispatch = useAppDispatch();
+  const getUser = useAppSelector(selectUser);
+  console.log(getUser);
 
-  // 仮ログイン処理
+  // ログイン処理
   const login = (): void =>{
     dispatch(loginAsync());
   }
-  // 仮ログアウト処理
+  // ログアウト処理
   const logout = (): void => {
     dispatch(logoutAsync());
   }
@@ -125,23 +124,27 @@ const Header: FC = () => {
               ))}
             </>
             <div className={classes.grow} />
-            {headers.logins.map((login, index) => (
-              <div className={classes.menu} key={index}>
-                <IconButtonSelect
-                  icon={login.icon}
-                  onClick={() => logout()}
-                />ログアウト
-              </div>
-            ))}
-            {headers.logouts.map((logout, index) => (
-              <div className={classes.menu} key={index}>
-                <IconButtonSelect
-                  icon={logout.icon}
-                  onClick={() => login()}
-                />ログイン
-              </div>
-            ))
-
+            {getUser?
+              <>
+                {headers.logins.map((login, index) => (
+                  <div className={classes.menu} key={index}>
+                    <IconButtonSelect
+                      icon={login.icon}
+                      onClick={() => logout()}
+                    />ログアウト
+                  </div>
+                ))}
+              </>: 
+              <>
+                {headers.logouts.map((logout, index) => (
+                  <div className={classes.menu} key={index}>
+                    <IconButtonSelect
+                      icon={logout.icon}
+                      onClick={() => login()}
+                    />ログイン
+                  </div>
+                ))}              
+              </>
             }
           </Toolbar>
         </Container>
