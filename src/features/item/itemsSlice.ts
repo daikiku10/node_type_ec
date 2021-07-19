@@ -10,13 +10,15 @@ interface ThunkConfig {
 }
 
 export interface ItemType {
-  _id: string;
-  id: number;
-  title: string;
-  detail: string;
-  priceM: number;
-  priceL: number;
-  imgPath: string;
+  items:{
+    _id: string;
+    id: number;
+    title: string;
+    detail: string;
+    priceM: number;
+    priceL: number;
+    imgPath: string;
+  }[]
 }
 
 interface ItemsState {

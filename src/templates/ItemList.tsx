@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { Link, useHistory } from 'react-router-dom';
 import { setItems_action } from '../redux/products/operations';
 import { InitialState } from '../redux/store/initialState';
@@ -7,10 +8,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardActionArea, CardContent, CardMedia, } from "@material-ui/core";
 import Inner from '../components/inner/Inner';
 import { ColorButton, InputField } from '../components/atoms';
+import { selectUser } from '../features/user/userSlice';
+import { selectItems } from '../features/item/itemsSlice';
 
-
-const itemsSelector = (state: InitialState) => state.products.items
-const userSelector = (state: InitialState) => state.user
 
 const useStyles = makeStyles({
   root: {
@@ -41,39 +41,40 @@ const useStyles = makeStyles({
 });
 
 const ItemList = () => {
-  const dispatch = useDispatch();
-  const getUser = useSelector(userSelector)
-  const getItems = useSelector(itemsSelector);
+  const dispatch = useAppDispatch();
+  const getUser = useAppSelector(selectUser);
+  const getItems = useAppSelector(selectItems);
   const classes = useStyles();
   const [itemsArray, setItemsArray] = useState(getItems)
   const [mozi, setMozi] = useState<string>("")
+  console.log(itemsArray)
 
-  useEffect(() => {
-    dispatch(setItems_action());
-  },[getUser])
+  // useEffect(() => {
+  //   dispatch(setItems_action());
+  // },[getUser])
 
   useEffect(() => {
     setItemsArray(getItems)
   }, [getItems])
 
   // 検索処理
-  const searchWord = () => {
-    setItemsArray(getItems);
-    let searchArray = getItems.filter((item) => {
-      return 0 <= item.title.indexOf(mozi);
-    })
-    if (searchArray.length === 0){
-      setItemsArray(getItems)
-    } else {
-      setItemsArray(searchArray)
-    }
-  }
+  // const searchWord = () => {
+  //   setItemsArray(getItems);
+  //   let searchArray = getItems.filter((item) => {
+  //     return 0 <= item.title.indexOf(mozi);
+  //   })
+  //   if (searchArray.length === 0){
+  //     setItemsArray(getItems)
+  //   } else {
+  //     setItemsArray(searchArray)
+  //   }
+  // }
 
   // クリアボタンの処理
-  const clearBtn = () => {
-    setMozi("")
-    setItemsArray(getItems)
-  }
+  // const clearBtn = () => {
+  //   setMozi("")
+  //   setItemsArray(getItems)
+  // }
 
   
   return (
@@ -105,9 +106,9 @@ const ItemList = () => {
          />
       </div>
       <ol className={classes.cardList}>
-        {itemsArray ? 
+        {itemsArray.length > 0 ? 
         <>
-          {itemsArray.map(item => (
+          {itemsArray[0].items.map(item => (
             <li key={item.id} className={classes.card}>
               <Link to={`/item-detail/${item.id}`}>
                 <Card className={classes.root}>
