@@ -1,6 +1,14 @@
 import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
+import { new_add_cart } from "./cartAPI";
 
 
+interface ThunkConfig {
+  state: RootState
+  rejectValue: {
+    errorMsg: string;
+  }
+}
 
 // 追加時のアイテム情報
 export type ItemInfo = {
@@ -14,26 +22,31 @@ export type ItemInfo = {
 
 // カートの型定義
 export interface CartState {
-  orderId?: string;
-  id: string;
+  _id?: string;
+  uid?: string | null;
   status: number;
   itemInfo: ItemInfo[];
 }
 
 // stateの初期値の設定
 const initialState: CartState = {
-  orderId: "",
-  id: "",
   status: 0,
   itemInfo: []
 }
 
 // カートのアイテム取得
-// export const fetchCartAsync = createAsyncThunk('cart/fetch', async ({ getUser }) => {
 
-// })
-
-// カートへアイテム追加
+// 新しくカートへアイテム追加
+export const newAddCartAsync = createAsyncThunk<
+  void,
+  CartState,
+  ThunkConfig
+>('cart/new-add', async (cart, { rejectWithValue }) => {
+  console.log(cart)
+  // try {
+    const new_cart = await new_add_cart(cart)
+  // }
+})
 
 // カートからアイテム削除
 

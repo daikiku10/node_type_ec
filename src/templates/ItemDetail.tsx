@@ -7,15 +7,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, TextField, Box } from "@material-ui/core";
 import Inner from '../components/inner/Inner';
 import { ColorButton } from '../components/atoms';
-import axios from 'axios';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { selectItems } from '../features/item/itemsSlice';
 import { selectToppings } from '../features/topping/toppingsSlice';
+import { selectUser } from '../features/user/userSlice';
+import { CartState, newAddCartAsync } from '../features/cart/cartSlice';
 
 
-// const itemsSelector = (state: InitialState) => state.products.items
-// const toppingsSelector = (state: InitialState) => state.products.toppings
-// const userSelector = (state: InitialState) => state.user
 // const cartSelector = (state: InitialState) => state.products.cart
 
 type ItemDetailParams = {
@@ -36,128 +34,124 @@ const useStyles = makeStyles({
 
 const ItemDetail = () => {
   const dispatch = useAppDispatch();
-  // const history = useHistory();
-  // const handleLink = (path: any) => history.push(path)
-  // const classes = useStyles();
-  // const getItems = useSelector(itemsSelector);
-  // const getToppings = useSelector(toppingsSelector);
-  // const getUser = useSelector(userSelector);
+  const history = useHistory();
+  const handleLink = (path: any) => history.push(path)
+  const classes = useStyles();
   // const getCart = useSelector(cartSelector);
   const getItemsData = useAppSelector(selectItems);
   const getToppingsData = useAppSelector(selectToppings);
-  console.log(getToppingsData)
+  const getUserData = useAppSelector(selectUser);
   const {item_id} = useParams<ItemDetailParams>();
   const item_id_num: number = Number(item_id);
-  console.log(item_id_num)
-
-  useEffect(() => {
-    // dispatch(setItems_action());
-    // dispatch(setToppings_action());
-  }, [])
   
   // パラメーターに一致した商品を使う
-  // let item:any = ''
-  // if(getItems !== undefined){
-  //   getItems.forEach((getItem) => {
-  //     if (getItem.id === item_id_num) {
-  //       return item = getItem
-  //     }
-  //   })
-  // }
+  let item:any = ''
+  if(getItemsData.length > 0 ){
+    getItemsData[0].items.forEach((getItem) => {
+      if (getItem.id === item_id_num) {
+        return item = getItem
+      }
+    })
+  }
 
   // 個数の値を取得する処理
-  // const [buyNum, setBuyNum] = useState<string>("1")
-  // const changeBuyNum = (e: ChangeEvent<HTMLInputElement>): void => {
-  //   setBuyNum(e.target.value)
-  // }
+  const [buyNum, setBuyNum] = useState<string>("1")
+  const changeBuyNum = (e: ChangeEvent<HTMLInputElement>): void => {
+    setBuyNum(e.target.value)
+  }
 
   // // 選択したトッピングの処理
-  // const [selectToppings, setSelectToppings] = useState<{id: number}[]>([])
-  // const changeTopping = (e: ChangeEvent<HTMLInputElement>): void => {
-  //   if (e.target.checked) {
-  //     let selectTopping = [...selectToppings, {id: Number(e.target.value)}]
-  //     setSelectToppings(selectTopping)
-  //   } else if (!e.target.checked) {
-  //     let selectTopping = selectToppings.filter(value => value.id !== Number(e.target.value))
-  //     setSelectToppings(selectTopping)
-  //   }
-  // }
+  const [choiceToppings, setChoiceToppings] = useState<{id: number}[]>([])
+  const changeTopping = (e: ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.checked) {
+      let choiceTopping = [...choiceToppings, {id: Number(e.target.value)}]
+      setChoiceToppings(choiceTopping)
+    } else if (!e.target.checked) {
+      let choiceTopping = choiceToppings.filter(value => value.id !== Number(e.target.value))
+      setChoiceToppings(choiceTopping)
+    }
+  }
 
   // サイズの値を取得する処理
-  // const [size, setSize] = useState<string>('M')
-  // const changeSize = (e: ChangeEvent<HTMLInputElement>): void => {
-  //   setSize(e.target.value)
-  // }
+  const [size, setSize] = useState<string>('M')
+  const changeSize = (e: ChangeEvent<HTMLInputElement>): void => {
+    setSize(e.target.value)
+  }
 
   // 「カートに入れる」ボタンの処理
-  // const addCartBtn = () => {
-  //   const cartItem:CartItem = {
-  //     id: new Date().getTime().toString(),
-  //     status: 0,
-  //     itemInfo:[{
-  //       itemId: item_id_num,
-  //       buyNum: Number(buyNum),
-  //       size: size,
-  //       toppings: selectToppings
-  //     }]
-  //   }
-  //   if(getUser){
-  //     if(!getCart){
-  //       dispatch(newCart_action(cartItem, getUser))
-  //       handleLink('/cart-item-list')
-  //     } else {
-  //       const copyCartItem: CartItem = getCart
-  //       let addItemInfo: ItemInfo[] = [...copyCartItem.itemInfo, cartItem.itemInfo[0]]
-  //       let addCartData: CartItem = {
-  //         id: getCart.id,
-  //         orderId: getCart.orderId,
-  //         status: 0,
-  //         itemInfo: addItemInfo
-  //       }
-  //       dispatch(addCart_action(addCartData, getUser))
-  //       handleLink('/cart-item-list')
-  //     }
-  //   }else {
-  //     if(!getCart){
-  //       dispatch(newCart_action(cartItem, getUser))
-  //       handleLink('/cart-item-list')
-  //     } else {
-  //       const copyCartItem: CartItem = getCart
-  //       let addItemInfo: ItemInfo[] = [...copyCartItem.itemInfo, cartItem.itemInfo[0]]
-  //       let addCartData: CartItem = {
-  //         id: getCart.id,
-  //         orderId: getCart.orderId,
-  //         status: 0,
-  //         itemInfo: addItemInfo
-  //       }  
-  //       dispatch(addCart_action(addCartData, getUser))
-  //       handleLink('/cart-item-list')
-  //     }
-  //   }
-  // }
+  const addCartBtn = () => {
+    console.log('カート追加！')
+    if (getUserData) {
+      const cartItem: CartState = {
+        uid: getUserData.uid,
+        status: 0,
+        itemInfo:[{
+          itemId: item_id_num,
+          buyNum: Number(buyNum),
+          size: size,
+          toppings: choiceToppings
+        }]
+      }
+      console.log(cartItem)
+      dispatch(newAddCartAsync(cartItem))
+    }
+    // if(getUserData){
+    //   if(!getCart){
+    //     dispatch(newCart_action(cartItem, getUser))
+    //     handleLink('/cart-item-list')
+    //   } else {
+    //     const copyCartItem: CartItem = getCart
+    //     let addItemInfo: ItemInfo[] = [...copyCartItem.itemInfo, cartItem.itemInfo[0]]
+    //     let addCartData: CartItem = {
+    //       id: getCart.id,
+    //       orderId: getCart.orderId,
+    //       status: 0,
+    //       itemInfo: addItemInfo
+    //     }
+    //     dispatch(addCart_action(addCartData, getUser))
+    //     handleLink('/cart-item-list')
+    //   }
+    // }else {
+    //   if(!getCart){
+    //     dispatch(newCart_action(cartItem, getUser))
+    //     handleLink('/cart-item-list')
+    //   } else {
+    //     const copyCartItem: CartItem = getCart
+    //     let addItemInfo: ItemInfo[] = [...copyCartItem.itemInfo, cartItem.itemInfo[0]]
+    //     let addCartData: CartItem = {
+    //       id: getCart.id,
+    //       orderId: getCart.orderId,
+    //       status: 0,
+    //       itemInfo: addItemInfo
+    //     }  
+    //     dispatch(addCart_action(addCartData, getUser))
+    //     handleLink('/cart-item-list')
+    //   }
+    // }
+  }
 
   // 選んだトッピング（奇数）
-  // let toppingNum_ki: number = 0
-  // let selectToppingArray1: {id: number}[] = selectToppings.filter(topping => topping.id % 2 !== 0)
-  // toppingNum_ki = selectToppingArray1.length;
+  let toppingNum_ki: number = 0
+  let choiceToppingArray1: {id: number}[] = choiceToppings.filter(topping => topping.id % 2 !== 0)
+  toppingNum_ki = choiceToppingArray1.length;
   // // 選んだトッピング（偶数）
-  // let toppingNum_guu: number = 0
-  // let selectToppingArray2: {id: number}[] = selectToppings.filter(topping => topping.id % 2 === 0)
-  // toppingNum_guu = selectToppingArray2.length;
+  let toppingNum_guu: number = 0
+  let choiceToppingArray2: {id: number}[] = choiceToppings.filter(topping => topping.id % 2 === 0)
+  toppingNum_guu = choiceToppingArray2.length;
   // // 合計金額
-  // let addPrice = item.priceM
-  // if (size === 'M') {
-  //     addPrice = item.priceM * Number(buyNum) + ((200 * (toppingNum_ki * Number(buyNum))) + ((300 * toppingNum_guu * Number(buyNum))))
-  //   } else if (size === 'L') {
-  //     addPrice = item.priceL * Number(buyNum) + ((200 * (toppingNum_ki * Number(buyNum))) + ((300 * toppingNum_guu * Number(buyNum))))
-  //   }
+  let addPrice = item.priceM
+  if (size === 'M') {
+      addPrice = item.priceM * Number(buyNum) + ((200 * (toppingNum_ki * Number(buyNum))) + ((300 * toppingNum_guu * Number(buyNum))))
+    } else if (size === 'L') {
+      addPrice = item.priceL * Number(buyNum) + ((200 * (toppingNum_ki * Number(buyNum))) + ((300 * toppingNum_guu * Number(buyNum))))
+    }
 
 
 
 
   return (
     <Inner>
-      {/* {item === '' ? <></>:
+      {item === '' ? <></>:
       <div className={classes.grid}>
         <Grid container justify='center'>
           <Box>
@@ -188,8 +182,8 @@ const ItemDetail = () => {
                 <span style={{ color: 'red', fontWeight: 'bold' }}> ※1ヶにつき200円、多めは300円（税込）</span>
               </p>
             </label>
-            {getToppings.map((topping) => (
-              <label key={topping.id}><input type="checkbox" name="topping" value={topping.id} onChange={(e:ChangeEvent<HTMLInputElement>) => changeTopping(e)}/>{topping.title}</label>
+            {getToppingsData[0].toppings.map((topping) => (
+              <label key={topping.id}><input type="checkbox" name="topping" value={topping.id} onChange={(e:ChangeEvent<HTMLInputElement>) => changeTopping(e)} />{topping.title}</label>
             ))}
           </div>
           <div className={classes.form}>
@@ -211,7 +205,7 @@ const ItemDetail = () => {
           </Box>
         </Grid>
       </div>
-      } */}
+      }
     </Inner>
   )
 }
