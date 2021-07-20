@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { Link, useHistory } from 'react-router-dom';
-import { setItems_action } from '../redux/products/operations';
-import { InitialState } from '../redux/store/initialState';
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardActionArea, CardContent, CardMedia, } from "@material-ui/core";
 import Inner from '../components/inner/Inner';
@@ -48,10 +46,6 @@ const ItemList = () => {
   const [itemsArray, setItemsArray] = useState(getItems)
   const [mozi, setMozi] = useState<string>("")
   console.log(itemsArray)
-
-  // useEffect(() => {
-  //   dispatch(setItems_action());
-  // },[getUser])
 
   useEffect(() => {
     setItemsArray(getItems)

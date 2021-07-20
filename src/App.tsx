@@ -12,6 +12,7 @@ import { selectItems } from './features/item/itemsSlice';
 import { useAppDispatch, useAppSelector } from './app/hooks';
 import { auth } from './firebase';
 import { getUserAsync, unsetUser } from './features/user/userSlice';
+import { fetchAllToppingsAsync, selectToppings } from './features/topping/toppingsSlice';
 
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
       }
     })
     dispatch(fetchAllItemsAsync());
+    dispatch(fetchAllToppingsAsync());
   },[])
   
   return (
@@ -34,8 +36,8 @@ const App = () => {
         <Header />
         <Switch>
           <Route exact path='/' component={ItemList} />
-          {/* <Route exact path='/item-detail/:item_id' component={ItemDetail} />
-          <Route exact path='/cart-item-list' component={CartItemList} />
+          <Route exact path='/item-detail/:item_id' component={ItemDetail} />
+          {/* <Route exact path='/cart-item-list' component={CartItemList} />
           <Route exact path='/order-history' component={OrderHistory} />
           <Route exact path='/order-complete' component={OrderComplete} /> */}
         </Switch>

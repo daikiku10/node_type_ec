@@ -15,7 +15,6 @@ router.post('/add', (req, res) => {
 
 router.get('/fetch-all-items', (req, res) => {
   Items.find({}).then((items) => {
-    console.log(items);
     res.send(items);
   })
 })
