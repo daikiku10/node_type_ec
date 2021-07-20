@@ -11,10 +11,9 @@ import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { selectItems } from '../features/item/itemsSlice';
 import { selectToppings } from '../features/topping/toppingsSlice';
 import { selectUser } from '../features/user/userSlice';
-import { CartState, newAddCartAsync } from '../features/cart/cartSlice';
+import { CartState, fetchCartAsync, newAddCartAsync, selectCart } from '../features/cart/cartSlice';
 
 
-// const cartSelector = (state: InitialState) => state.products.cart
 
 type ItemDetailParams = {
   item_id: string
@@ -37,12 +36,19 @@ const ItemDetail = () => {
   const history = useHistory();
   const handleLink = (path: any) => history.push(path)
   const classes = useStyles();
-  // const getCart = useSelector(cartSelector);
   const getItemsData = useAppSelector(selectItems);
   const getToppingsData = useAppSelector(selectToppings);
   const getUserData = useAppSelector(selectUser);
   const {item_id} = useParams<ItemDetailParams>();
   const item_id_num: number = Number(item_id);
+  const getCartData = useAppSelector(selectCart);
+  console.log(getCartData)
+
+  useEffect(() => {
+    if(getUserData){
+      dispatch(fetchCartAsync(getUserData));
+    }
+  },[])
   
   // パラメーターに一致した商品を使う
   let item:any = ''

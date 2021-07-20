@@ -25,8 +25,8 @@ const App = () => {
         dispatch(unsetUser());
       }
     })
-    dispatch(fetchAllItemsAsync());
     dispatch(fetchAllToppingsAsync());
+    dispatch(fetchAllItemsAsync());
   },[])
   
   return (

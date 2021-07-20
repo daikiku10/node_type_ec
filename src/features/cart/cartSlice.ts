@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import { new_add_cart } from "./cartAPI";
+import { UserType } from "../user/userSlice";
+import { new_add_cart, fetch_cart } from "./cartAPI";
 
 
 interface ThunkConfig {
@@ -35,24 +36,38 @@ const initialState: CartState = {
 }
 
 // カートのアイテム取得
+export const fetchCartAsync = createAsyncThunk<
+  CartState,
+  UserType,
+  ThunkConfig
+>('cart/fetch-cart', async (userData, { rejectWithValue }) => {
+  try {
+    const cartData = await fetch_cart(userData)
+    return cartData
+  } catch (e) {
+    return rejectWithValue({ errorMsg: e.message });
+  }
+})
 
 // 新しくカートへアイテム追加
 export const newAddCartAsync = createAsyncThunk<
-  void,
+  CartState,
   CartState,
   ThunkConfig
 >('cart/new-add', async (cart, { rejectWithValue }) => {
-  console.log(cart)
-  // try {
+  try {
     const new_cart = await new_add_cart(cart)
-  // }
+    return new_cart
+  } catch (e) {
+    return rejectWithValue({ errorMsg: e.message });
+  }
 })
 
 // カートからアイテム削除
 
 // カートの新規作成
 
-export const cartSlice = createSlice({
+export const CartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
@@ -62,5 +77,17 @@ export const cartSlice = createSlice({
     setCart: (state, action) => {
       state = action.payload
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchCartAsync.fulfilled, (state, action) => {
+      state._id = action.payload._id
+      state.itemInfo = action.payload.itemInfo
+      state.status = action.payload.status
+      state.uid = action.payload.uid
+    })
   }
 })
+
+export const selectCart = (state: RootState) => state.cart
+
+export default CartSlice.reducer;
