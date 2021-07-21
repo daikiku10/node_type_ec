@@ -11,7 +11,7 @@ import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { selectItems } from '../features/item/itemsSlice';
 import { selectToppings } from '../features/topping/toppingsSlice';
 import { selectUser } from '../features/user/userSlice';
-import { CartState, fetchCartAsync, newAddCartAsync, selectCart } from '../features/cart/cartSlice';
+import { AddCartAsync, CartState, fetchCartAsync, newAddCartAsync, selectCart } from '../features/cart/cartSlice';
 
 
 
@@ -48,7 +48,7 @@ const ItemDetail = () => {
     if(getUserData){
       dispatch(fetchCartAsync(getUserData));
     }
-  },[])
+  },[getUserData])
   
   // パラメーターに一致した商品を使う
   let item:any = ''
@@ -86,8 +86,7 @@ const ItemDetail = () => {
 
   // 「カートに入れる」ボタンの処理
   const addCartBtn = () => {
-    console.log('カート追加！')
-    if (getUserData) {
+    if (getUserData && getCartData.itemInfo === undefined) {
       const cartItem: CartState = {
         uid: getUserData.uid,
         status: 0,
@@ -98,8 +97,24 @@ const ItemDetail = () => {
           toppings: choiceToppings
         }]
       }
-      console.log(cartItem)
       dispatch(newAddCartAsync(cartItem))
+    } else if (getUserData && getCartData.itemInfo !== undefined){
+      // 追加処理（2回目）
+      const addItemInfo = {
+        itemId: item_id_num,
+        buyNum: Number(buyNum),
+        size: size,
+        toppings: choiceToppings
+      }
+      const copyCartData = getCartData
+      const newItemInfo = [...copyCartData.itemInfo, addItemInfo]
+      const addGetCartData = {
+        _id: getCartData._id,
+        uid: getCartData.uid,
+        status: getCartData.status,
+        itemInfo: newItemInfo
+      }
+      dispatch(AddCartAsync(addGetCartData));
     }
     // if(getUserData){
     //   if(!getCart){

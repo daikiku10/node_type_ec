@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk} from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { UserType } from "../user/userSlice";
-import { new_add_cart, fetch_cart } from "./cartAPI";
+import { new_add_cart, fetch_cart, add_cart } from "./cartAPI";
 
 
 interface ThunkConfig {
@@ -49,7 +49,7 @@ export const fetchCartAsync = createAsyncThunk<
   }
 })
 
-// 新しくカートへアイテム追加
+// 新しくカートへアイテム追加(1回目)
 export const newAddCartAsync = createAsyncThunk<
   CartState,
   CartState,
@@ -58,6 +58,20 @@ export const newAddCartAsync = createAsyncThunk<
   try {
     const new_cart = await new_add_cart(cart)
     return new_cart
+  } catch (e) {
+    return rejectWithValue({ errorMsg: e.message });
+  }
+})
+
+// カートの中に新しいカート情報を追加(2回目)
+export const AddCartAsync = createAsyncThunk<
+  CartState,
+  CartState,
+  ThunkConfig
+>('cart/update-cart', async (cart, { rejectWithValue }) => {
+  try {
+    const cartData = await add_cart(cart)
+    return cartData
   } catch (e) {
     return rejectWithValue({ errorMsg: e.message });
   }
@@ -80,6 +94,13 @@ export const CartSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCartAsync.fulfilled, (state, action) => {
+      state._id = action.payload._id
+      state.itemInfo = action.payload.itemInfo
+      state.status = action.payload.status
+      state.uid = action.payload.uid
+    });
+
+    builder.addCase(AddCartAsync.fulfilled, (state, action) => {
       state._id = action.payload._id
       state.itemInfo = action.payload.itemInfo
       state.status = action.payload.status

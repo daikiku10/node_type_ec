@@ -18,7 +18,19 @@ router.post('/new-add', (req, res) => {
   }
   const newCart = new Cart(new_cart)
   newCart.save().then((cart) => {
-    console.log(cart)
+    res.send(cart)
+  })
+})
+
+// カートの追加処理（データ更新）
+router.post('/update-cart', (req, res) => {
+  const new_itemInfo = req.body.itemInfo;
+  const uid = req.body.uid;
+  Cart.findOneAndUpdate(
+    { uid: uid, status: 0},
+    { itemInfo: new_itemInfo },
+    { new: true}
+  ).then((cart) => {
     res.send(cart)
   })
 })

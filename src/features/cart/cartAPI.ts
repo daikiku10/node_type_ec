@@ -23,3 +23,14 @@ export const new_add_cart = (cart: CartState): Promise<CartState> =>
     .catch((e) => {
       throw new Error(e)
     })
+
+// カートの追加処理（データ更新）
+export const add_cart = (cart: CartState): Promise<CartState> =>
+  axios
+    .post('http://localhost:5000/cart/update-cart', cart)
+    .then((res) => {
+      return res.data
+    })
+    .catch((e) => {
+      throw new Error(e)
+    })
