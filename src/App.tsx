@@ -37,8 +37,8 @@ const App = () => {
         <Switch>
           <Route exact path='/' component={ItemList} />
           <Route exact path='/item-detail/:item_id' component={ItemDetail} />
-          {/* <Route exact path='/cart-item-list' component={CartItemList} />
-          <Route exact path='/order-history' component={OrderHistory} />
+          <Route exact path='/cart-item-list' component={CartItemList} />
+          {/* <Route exact path='/order-history' component={OrderHistory} />
           <Route exact path='/order-complete' component={OrderComplete} /> */}
         </Switch>
       </BrowserRouter>

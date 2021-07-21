@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { CartItem, ItemsList, ToppingsList } from '../redux/store/initialState'
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import {Container, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, List, ListItemText, Box} from '@material-ui/core';
+import { ItemType } from '../features/item/itemsSlice';
+import { ToppingType } from '../features/topping/toppingsSlice';
+import { CartState } from '../features/cart/cartSlice';
 
 
 interface Props {
-  getItems: ItemsList
-  getToppings: ToppingsList
-  getCart: CartItem | undefined
+  getItems: ItemType[]
+  getToppings: ToppingType[]
+  getCart: CartState
   deleteBtn: any
 }
 
@@ -42,9 +45,9 @@ const CartTable = ({getCart, getItems, getToppings, deleteBtn}: Props) => {
   // 合計金額の処理
   useEffect(() => {
     let price = 0
-    if(getCart){
+    if(getCart.itemInfo !== undefined){
       getCart.itemInfo.map(data => (
-        getItems.filter(itemData => { return data.itemId === itemData.id 
+        getItems[0].items.filter(itemData => { return data.itemId === itemData.id 
         }).map(item => (
           (data.size === "M" ? price += item.priceM * data.buyNum : price += item.priceL * data.buyNum)
         ))
@@ -56,10 +59,10 @@ const CartTable = ({getCart, getItems, getToppings, deleteBtn}: Props) => {
   // トッピング合計金額
   useEffect(() => {
     let toppingPr = 0
-    if(getCart){
+    if(getCart.itemInfo !== undefined){
       getCart.itemInfo.map(data => (
         data.toppings.map(topping => (
-          getToppings.filter(top => {return topping.id === top.id
+          getToppings[0].toppings.filter(top => {return topping.id === top.id
           }).map(to => (
             toppingPr += to.price * data.buyNum
           ))
@@ -72,7 +75,7 @@ const CartTable = ({getCart, getItems, getToppings, deleteBtn}: Props) => {
 
   return (
     <Container maxWidth="md">
-      {getCart ? 
+      {getCart.itemInfo !== undefined ? 
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="customized table">
             <TableHead>
@@ -87,7 +90,7 @@ const CartTable = ({getCart, getItems, getToppings, deleteBtn}: Props) => {
             <TableBody>
               {getCart.itemInfo.map((data, index) => (
                 <StyledTableRow key={index}>
-                  {getItems.filter(item => {
+                  {getItems[0].items.filter(item => {
                     return data.itemId === item.id
                   }).map((item) => (
                     <React.Fragment key={index}>
@@ -101,7 +104,7 @@ const CartTable = ({getCart, getItems, getToppings, deleteBtn}: Props) => {
                       <StyledTableCell align="center">
                         {data.toppings.map((topping, ind) => (
                           <List key={ind}>
-                            {getToppings.filter((top) => {
+                            {getToppings[0].toppings.filter((top) => {
                               return topping.id === top.id
                             }).map((to) => (
                                 <ListItemText key={ind}>{to.title} : {to.price}円、{data.buyNum}個</ListItemText>
@@ -115,7 +118,7 @@ const CartTable = ({getCart, getItems, getToppings, deleteBtn}: Props) => {
                         <Typography>【ﾄｯﾋﾟﾝｸﾞ】</Typography>
                         {data.toppings.map((topping, ind) => (
                           <React.Fragment key={ind}>
-                            {getToppings.filter((top) => {
+                            {getToppings[0].toppings.filter((top) => {
                               return topping.id === top.id
                             }).map((to) => (
                               <Typography key={ind}>{to.price * data.buyNum}円</Typography>

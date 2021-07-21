@@ -1,12 +1,8 @@
 import React, { useEffect, useState, ChangeEvent } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useParams, useHistory } from 'react-router-dom';
-import { addCart_action, newCart_action, setCart_action, setItems_action, setToppings_action } from '../redux/products/operations'
-import { CartItem, InitialState, Item, ItemInfo, Topping } from '../redux/store/initialState'
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Grid, TextField, Box } from "@material-ui/core";
 import Inner from '../components/inner/Inner';
-import { ColorButton } from '../components/atoms';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import { selectItems } from '../features/item/itemsSlice';
 import { selectToppings } from '../features/topping/toppingsSlice';

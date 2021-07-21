@@ -4,40 +4,40 @@ import CartTable from '../components/CartTable'
 import OrderForm from '../components/OrderForm'
 import { deleteCart_action, resetOrder_action, setCart_action, setItems_action, setToppings_action } from '../redux/products/operations'
 import { CartItem, InitialState } from '../redux/store/initialState'
-import { Button } from '@material-ui/core'
 import Inner from '../components/inner/Inner'
+import { useAppDispatch, useAppSelector } from '../app/hooks';
+import { selectItems } from '../features/item/itemsSlice';
+import { selectToppings } from '../features/topping/toppingsSlice';
+import { selectUser } from '../features/user/userSlice';
+import { selectCart, fetchCartAsync } from '../features/cart/cartSlice';
 
-const itemsSelector = (state: InitialState) => state.products.items
-const toppingsSelector = (state: InitialState) => state.products.toppings
-const userSelector = (state: InitialState) => state.user
-const cartSelector = (state: InitialState) => state.products.cart
+import { Button } from '@material-ui/core'
 
 
 const CartItemList = () => {
   const dispatch = useDispatch();
-  const getItems = useSelector(itemsSelector);
-  const getToppings = useSelector(toppingsSelector);
-  const getUser = useSelector(userSelector);
-  const getCart = useSelector(cartSelector);
+  const getItems = useAppSelector(selectItems);
+  const getToppings = useAppSelector(selectToppings);
+  const getUser = useAppSelector(selectUser);
+  const getCart = useAppSelector(selectCart);
 
-  useEffect(() => {
-    dispatch(setItems_action());
-    dispatch(setToppings_action());
-    return () => {
-      dispatch(resetOrder_action())
-    }
-  }, [])
+  // useEffect(() => {
+  //   return () => {
+  //     dispatch(resetOrder_action())
+  //   }
+  // }, [])
 
   useEffect(() => {
     if(getUser){
-      dispatch(setCart_action(getUser))
+      dispatch(fetchCartAsync(getUser));
     }
-  }, [getUser])
+  },[getUser])
 
   const deleteBtn = (index: number) => {
-    let copyCart: CartItem  = getCart
-    copyCart.itemInfo.splice(index, 1)
-    dispatch(deleteCart_action(copyCart, getUser))
+    console.log('削除ボタン')
+    // let copyCart: CartItem  = getCart
+    // copyCart.itemInfo.splice(index, 1)
+    // dispatch(deleteCart_action(copyCart, getUser))
   }
   
 
