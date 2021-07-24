@@ -40,11 +40,26 @@ router.post('/update-cart', (req, res) => {
 
 // カート商品を購入する処理
 router.post('/add-order', (req, res) => {
-  console.log(req)
-  // const orderInfo = req.body.orderInfo;
-  // const uid = orderInfo.uid;
-  // console.log(orderInfo)
-  // res.send(orderInfo)
+  const orderInfo = req.body;
+  const uid = orderInfo.uid;
+  Cart.findOneAndUpdate(
+    { uid: uid, status: 0},
+    { $set: { 
+      status: req.body.status,
+      name: req.body.name,
+      email: req.body.email,
+      zipcode: req.body.zipcode,
+      address: req.body.address,
+      tel: req.body.tel,
+      orderDateTime: req.body.orderDateTime,
+      destinationTime: req.body.destinationTime,
+      payType: req.body.payType,
+      cardNo: req.body.cardNo
+    }},
+    { new: true }
+  ).then((order) => {
+    res.send(order)
+  })
 })
 
 module.exports = router;

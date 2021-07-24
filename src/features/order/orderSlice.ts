@@ -19,7 +19,8 @@ export interface OrderInfoType {
   address?: string;
   tel?: string;
   orderDateTime?: string;
-  payType?: number;
+  destinationTime?: string;
+  payType?: string;
   cardNo?: string;
 }
 
@@ -34,7 +35,8 @@ const initialState: OrderInfoType = {
   address: "",
   tel: "",
   orderDateTime: "",
-  payType: 0,
+  destinationTime: "",
+  payType: "",
   cardNo: ""
 }
 

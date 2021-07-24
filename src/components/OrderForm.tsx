@@ -8,16 +8,16 @@ import { CartItem, InitialState, OrderData } from '../redux/store/initialState';
 import { order_action } from '../redux/products/operations';
 import { CartState } from '../features/cart/cartSlice';
 import { UserType } from '../features/user/userSlice';
-import { orderAsync } from '../features/order/orderSlice';
+import { orderAsync, OrderType } from '../features/order/orderSlice';
 
 interface OrderFormProps {
-  getCart: CartState
+  getCart: OrderType
   // getUser: UserType
 }
 
 const OrderForm = ({ getCart }: OrderFormProps) => {
-  const {register, handleSubmit, watch, formState:{errors}} = useForm<OrderData>();
-  const selectPay = watch("paymentMethod")
+  const {register, handleSubmit, watch, formState:{errors}} = useForm<OrderType>();
+  const selectPay = watch("payType")
   const dispatch = useAppDispatch();
   const history = useHistory();
   const handleLink = (path: any) => history.push(path)
@@ -67,25 +67,18 @@ const OrderForm = ({ getCart }: OrderFormProps) => {
     timeError = ''
   }
 
-  const onSubmit = handleSubmit(data => {
-    console.log('注文ボタン')
-    data.orderDate = specifyTime
+  const onSubmit = handleSubmit((data: OrderType) => {
+    // name, email, zipcode, address, tel, payType, cardNo以外の情報をdataへ追加
+    data.orderDateTime = specifyTime
     data.destinationTime = orderTime
-    // data.id = getCart._id
-    // data.itemInfo = getCart.itemInfo
-    // if(data.paymentMethod === "1"){
-    //   data.status = 1
-    // } else if (data.paymentMethod === "2"){
-    //   data.status = 2
-    // }
-    // if(getCart.orderId !== undefined){
-    //   data.orderId = getCart.orderId
-    // }
-    // if(getUser) {
-    //   dispatch(order_action(data, getUser))
-    //   handleLink('/order-complete')
-
-    // }
+    if(data.payType === "1"){
+      data.status = 1
+    } else if (data.payType === "2"){
+      data.status = 2
+    }
+    data._id = getCart._id
+    data.uid = getCart.uid
+    data.itemInfo = getCart.itemInfo
     console.log(data)
     dispatch(orderAsync(data))
   });
@@ -96,39 +89,39 @@ const OrderForm = ({ getCart }: OrderFormProps) => {
     <Box>
       <Box mt={2}>
         <TextField label="名前" style={{width: 300}}
-          {...register("destinationName",{
+          {...register("name",{
             required: true,
           })}
-          helperText={errors.destinationName && errors.destinationName.message} />
+          helperText={errors.name && errors.name.message} />
       </Box>
       <Box mt={2}>
         <TextField label="メールアドレス" style={{width: 300}}
-          {...register("destinationEmail",{
+          {...register("email",{
             required: "メールアドレスを入力してください",
             pattern: {
               value: /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/,
               message: "メールアドレスを正しく入力して下さい"
             },
           })}
-          helperText={errors.destinationEmail && errors.destinationEmail.message} />
+          helperText={errors.email && errors.email.message} />
       </Box>
       <Box mt={2}>
         <TextField label="郵便番号" style={{width: 300}}
-          {...register("destinationZipcode",{
+          {...register("zipcode",{
             required: "郵便番号を入力してください",
             pattern: {
               value: /^[0-9]{3}-[0-9]{4}$/,
               message: "郵便番号の形式が不正です"
             },
           })}
-          helperText={errors.destinationZipcode && errors.destinationZipcode.message} />
+          helperText={errors.zipcode && errors.zipcode.message} />
       </Box>
       <Box mt={2}>
         <TextField label="住所" style={{width: 300}}
-          {...register("destinationAddress",{
+          {...register("address",{
             required: true
           })}
-          helperText={errors.destinationAddress && errors.destinationAddress.message} />
+          helperText={errors.address && errors.address.message} />
       </Box>
       <Box mt={2}>
         <TextField label="電話番号" style={{width: 300}}
@@ -240,7 +233,7 @@ const OrderForm = ({ getCart }: OrderFormProps) => {
         </FormControl>
       </Box>
       <Box mt={2}>
-        <select {...register("paymentMethod",{required: true})} style={{width: 300}}>
+        <select {...register("payType",{required: true})} style={{width: 300}}>
           <option value="" hidden>支払い方法選択</option>
           <option value="1">代金引換</option>
           <option value="2">クレジットカード決済</option>
@@ -248,14 +241,14 @@ const OrderForm = ({ getCart }: OrderFormProps) => {
         <div>
           {selectPay === "2" ? 
           <TextField label="クレジットカード番号" style={{width: 300}}
-            {...register("creditCardNo",{
+            {...register("cardNo",{
               required: "クレジットカード番号を入力してください",
               pattern:{
                 value:/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/,
                 message:"XXXX−XXXX-XXXXの形式で入力してください"
               },
             })}
-            helperText={errors.creditCardNo && errors.creditCardNo.message}
+            helperText={errors.cardNo && errors.cardNo.message}
           />
           :
           <></>
