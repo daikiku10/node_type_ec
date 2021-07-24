@@ -35,4 +35,16 @@ router.post('/update-cart', (req, res) => {
   })
 })
 
+// ------------------------------------------
+// ここからは注文時処理
+
+// カート商品を購入する処理
+router.post('/add-order', (req, res) => {
+  console.log(req)
+  // const orderInfo = req.body.orderInfo;
+  // const uid = orderInfo.uid;
+  // console.log(orderInfo)
+  // res.send(orderInfo)
+})
+
 module.exports = router;

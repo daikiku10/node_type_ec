@@ -1,22 +1,26 @@
 import React, { useState, ChangeEvent } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useAppDispatch } from '../app/hooks';
 import { useHistory } from 'react-router-dom';
 import { Controller, useForm } from 'react-hook-form'
 import { Box, Button, FormControl, Menu, MenuItem, Select, TextField, InputLabel, FormHelperText } from '@material-ui/core';
 import { CartItem, InitialState, OrderData } from '../redux/store/initialState';
 import { order_action } from '../redux/products/operations';
+import { CartState } from '../features/cart/cartSlice';
+import { UserType } from '../features/user/userSlice';
+import { orderAsync } from '../features/order/orderSlice';
 
-const userSelector = (state: InitialState) => state.user
-const cartSelector = (state: InitialState) => state.products.cart
+interface OrderFormProps {
+  getCart: CartState
+  // getUser: UserType
+}
 
-const OrderForm = () => {
+const OrderForm = ({ getCart }: OrderFormProps) => {
   const {register, handleSubmit, watch, formState:{errors}} = useForm<OrderData>();
   const selectPay = watch("paymentMethod")
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
   const handleLink = (path: any) => history.push(path)
-  const getUser = useSelector(userSelector);
-  const getCart = useSelector(cartSelector);
 
 
 
@@ -64,24 +68,26 @@ const OrderForm = () => {
   }
 
   const onSubmit = handleSubmit(data => {
+    console.log('注文ボタン')
     data.orderDate = specifyTime
     data.destinationTime = orderTime
-    data.id = getCart.id
-    data.itemInfo = getCart.itemInfo
-    if(data.paymentMethod === "1"){
-      data.status = 1
-    } else if (data.paymentMethod === "2"){
-      data.status = 2
-    }
-    if(getCart.orderId !== undefined){
-      data.orderId = getCart.orderId
-    }
-    if(getUser) {
-      dispatch(order_action(data, getUser))
-      handleLink('/order-complete')
+    // data.id = getCart._id
+    // data.itemInfo = getCart.itemInfo
+    // if(data.paymentMethod === "1"){
+    //   data.status = 1
+    // } else if (data.paymentMethod === "2"){
+    //   data.status = 2
+    // }
+    // if(getCart.orderId !== undefined){
+    //   data.orderId = getCart.orderId
+    // }
+    // if(getUser) {
+    //   dispatch(order_action(data, getUser))
+    //   handleLink('/order-complete')
 
-    }
+    // }
     console.log(data)
+    dispatch(orderAsync(data))
   });
 
 

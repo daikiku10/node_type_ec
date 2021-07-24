@@ -42,7 +42,7 @@ const CartItemList = () => {
         {getUser ? <Button onClick={() => setShow(!show)}>注文に進む</Button> : <></> }
         </> : <></>}
       {show ? 
-      <OrderForm />
+      <OrderForm getCart={getCart}/>
       :
       <></>
       }

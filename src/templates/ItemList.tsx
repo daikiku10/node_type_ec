@@ -49,6 +49,7 @@ const ItemList = () => {
 
   useEffect(() => {
     setItemsArray(getItems)
+    console.log('開始')
   }, [getItems])
 
   // 検索処理
