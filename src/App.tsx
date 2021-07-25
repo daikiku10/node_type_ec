@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import './App.css';
 import Header from './components/header/Header'
@@ -8,14 +8,13 @@ import CartItemList from './templates/CartItemList';
 import OrderHistory from './templates/OrderHistory';
 import OrderComplete from './templates/OrderComplete';
 import { fetchAllItemsAsync } from './features/item/itemsSlice';
-import { selectItems } from './features/item/itemsSlice';
-import { useAppDispatch, useAppSelector } from './app/hooks';
+import { useAppDispatch } from './app/hooks';
 import { auth } from './firebase';
 import { getUserAsync, unsetUser } from './features/user/userSlice';
-import { fetchAllToppingsAsync, selectToppings } from './features/topping/toppingsSlice';
+import { fetchAllToppingsAsync } from './features/topping/toppingsSlice';
 
 
-const App = () => {
+const App: FC = ()  => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
@@ -30,19 +29,16 @@ const App = () => {
   },[])
   
   return (
-    //  testコメント
-    <div className="App">
-      <BrowserRouter>
-        <Header />
-        <Switch>
-          <Route exact path='/' component={ItemList} />
-          <Route exact path='/item-detail/:item_id' component={ItemDetail} />
-          <Route exact path='/cart-item-list' component={CartItemList} />
-          <Route exact path='/order-history' component={OrderHistory} />
-          <Route exact path='/order-complete' component={OrderComplete} />
-        </Switch>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Header />
+      <Switch>
+        <Route exact path='/' component={ItemList} />
+        <Route exact path='/item-detail/:item_id' component={ItemDetail} />
+        <Route exact path='/cart-item-list' component={CartItemList} />
+        <Route exact path='/order-history' component={OrderHistory} />
+        <Route exact path='/order-complete' component={OrderComplete} />
+      </Switch>
+    </BrowserRouter>
   );
 }
 

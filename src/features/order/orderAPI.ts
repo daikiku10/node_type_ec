@@ -24,3 +24,14 @@ axios
   .catch((e) => {
     throw new Error(e)
   })
+
+// 注文をキャンセルする（ステータス変更）
+export const change_status_order = (orderInfo: OrderType): Promise<OrderType[]> => 
+  axios
+    .post('http://localhost:5000/cart/change-order-status', orderInfo)
+    .then((res) => {
+      return res.data
+    })
+    .catch((e) => {
+      throw new Error(e)
+    })

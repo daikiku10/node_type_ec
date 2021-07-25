@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import {makeStyles} from "@material-ui/core/styles";
 import { Button, Grid, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import Inner from '../components/inner/Inner';
-import { fetchOrderAsync, selectOrder } from '../features/order/orderSlice';
+import { changeOrderStatusAsync, fetchOrderAsync, OrderType, selectOrder } from '../features/order/orderSlice';
 import { selectUser } from '../features/user/userSlice';
 import { selectItems } from '../features/item/itemsSlice';
 import { selectToppings } from '../features/topping/toppingsSlice';
@@ -56,12 +56,10 @@ const OrderHistory = () => {
     }
   }, [getUser])
 
-  const changeStatusBtn = () => {
-    console.log('ステータスチェンジボタン')
-    // orderData.status = 9
-    // if(getUser){
-    //   dispatch(cancelOrder_action(orderData, getUser))
-    // }
+  const changeStatusBtn = (orderData: OrderType) => {
+    const copyOrderData = JSON.parse(JSON.stringify(orderData))
+    copyOrderData.status = 9
+     dispatch(changeOrderStatusAsync(copyOrderData))
   }
 
   return (
@@ -104,7 +102,7 @@ const OrderHistory = () => {
                 </List>
               ))}
               <Grid container justify="flex-end">
-                <Button onClick={() => changeStatusBtn()}>キャンセル</Button>
+                <Button onClick={() => changeStatusBtn(orderData)}>キャンセル</Button>
               </Grid>
             </List>
           ))}
@@ -143,7 +141,7 @@ const OrderHistory = () => {
                 </List>
               ))}
               <Grid container justify="flex-end">
-                <Button onClick={() => changeStatusBtn()}>キャンセル</Button>
+                <Button onClick={() => changeStatusBtn(orderData)}>キャンセル</Button>
               </Grid>
             </List>
           ))}

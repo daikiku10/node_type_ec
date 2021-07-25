@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
@@ -49,7 +48,6 @@ const ItemList = () => {
 
   useEffect(() => {
     setItemsArray(getItems)
-    console.log('開始')
   }, [getItems])
 
   // 検索処理

@@ -72,4 +72,20 @@ router.post('/add-order', (req, res) => {
   })
 })
 
+// 注文をキャンセルする（ステータス変更）
+router.post('/change-order-status', (req, res) => {
+  const _id = req.body._id;
+  const status = req.body.status;
+  Cart.findOneAndUpdate(
+    { _id: _id},
+    { status: status},
+    { new: true }
+  ).then(() => {
+    Cart.find({}
+    ).then((orders) => {
+      res.send(orders)
+    })
+  })
+})
+
 module.exports = router;

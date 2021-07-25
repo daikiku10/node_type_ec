@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice,} from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { CartState } from "../cart/cartSlice";
 import { UserType } from "../user/userSlice";
-import { add_order_info, fetch_order_info} from './orderAPI';
+import { add_order_info, fetch_order_info, change_status_order } from './orderAPI';
 
 
 interface ThunkConfig {
@@ -65,6 +65,20 @@ ThunkConfig
   }
 })
 
+// キャンセル時のステータス変更の処理
+export const changeOrderStatusAsync = createAsyncThunk<
+  OrderType[],
+  OrderType,
+  ThunkConfig
+>('cart/status-order', async (orderInfo, { rejectWithValue }) => {
+  try {
+    const change_order_info = await change_status_order(orderInfo)
+    return change_order_info
+  } catch (e) {
+    return rejectWithValue({ errorMsg: e.message });
+  }
+})
+
 // スライス
 export const OrderSlice = createSlice({
   name: 'order',
@@ -77,6 +91,9 @@ export const OrderSlice = createSlice({
     builder.addCase(orderAsync.fulfilled, (state, action) => {
       let orderdata = [...state.value ,action.payload]
       state.value =  orderdata
+    })
+    builder.addCase(changeOrderStatusAsync.fulfilled, (state, action) => {
+      state.value = [...action.payload]
     })
   }
 })
