@@ -74,6 +74,7 @@ const OrderForm = ({ getCart }: OrderFormProps) => {
     data.uid = getCart.uid
     data.itemInfo = getCart.itemInfo
     dispatch(orderAsync(data))
+    handleLink('/order-complete')
   });
 
 

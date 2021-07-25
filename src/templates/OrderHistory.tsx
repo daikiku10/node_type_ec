@@ -1,8 +1,5 @@
 import React, {useEffect} from 'react';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { useSelector, useDispatch } from 'react-redux';
-import { setCart_action, resetOrder_action, setItems_action, setToppings_action, cancelOrder_action } from '../redux/products/operations';
-import { InitialState, OrderData } from '../redux/store/initialState';
 import {makeStyles} from "@material-ui/core/styles";
 import { Button, Grid, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import Inner from '../components/inner/Inner';

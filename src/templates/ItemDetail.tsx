@@ -94,6 +94,7 @@ const ItemDetail = () => {
         }]
       }
       dispatch(newAddCartAsync(cartItem))
+      handleLink('/cart-item-list')
     } else if (getUserData && getCartData.itemInfo !== undefined){
       // 追加処理（2回目）
       const addItemInfo = {
@@ -111,6 +112,8 @@ const ItemDetail = () => {
         itemInfo: newItemInfo
       }
       dispatch(AddCartAsync(addGetCartData));
+      handleLink('/cart-item-list')
+
     }
     // if(getUserData){
     //   if(!getCart){
