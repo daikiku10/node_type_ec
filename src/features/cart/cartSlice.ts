@@ -77,10 +77,6 @@ export const AddCartAsync = createAsyncThunk<
   }
 })
 
-// カートからアイテム削除
-
-// カートの新規作成
-
 export const CartSlice = createSlice({
   name: 'cart',
   initialState,

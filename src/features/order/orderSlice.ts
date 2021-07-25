@@ -27,17 +27,13 @@ export interface OrderInfoType {
 // カートの型と注文情報の型を繋げる
 export interface OrderType extends CartState, OrderInfoType {}
 
+interface OrderState {
+  value: OrderType[]
+}
+
 // stateの初期値の設定
-const initialState: OrderInfoType = {
-  name: "",
-  email: "",
-  zipcode: "",
-  address: "",
-  tel: "",
-  orderDateTime: "",
-  destinationTime: "",
-  payType: "",
-  cardNo: ""
+const initialState: OrderState = {
+  value: [],
 }
 
 // オーダー時（カート情報に注文情報を追加して更新する処理）
@@ -53,3 +49,20 @@ ThunkConfig
     return rejectWithValue({ errorMsg: e.message });
   }
 })
+
+// スライス
+export const OrderSlice = createSlice({
+  name: 'order',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(orderAsync.fulfilled, (state, action) => {
+      let orderdata = [...state.value ,action.payload]
+      state.value =  orderdata
+    })
+  }
+})
+
+export const selectOrder = (state: RootState) => state.order.value
+
+export default OrderSlice.reducer;

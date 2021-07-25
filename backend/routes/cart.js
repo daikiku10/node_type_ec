@@ -58,6 +58,7 @@ router.post('/add-order', (req, res) => {
     }},
     { new: true }
   ).then((order) => {
+    console.log('ここまで' + order)
     res.send(order)
   })
 })

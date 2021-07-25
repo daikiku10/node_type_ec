@@ -1,18 +1,12 @@
-import React, { useState, ChangeEvent } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState } from 'react'
 import { useAppDispatch } from '../app/hooks';
 import { useHistory } from 'react-router-dom';
-import { Controller, useForm } from 'react-hook-form'
-import { Box, Button, FormControl, Menu, MenuItem, Select, TextField, InputLabel, FormHelperText } from '@material-ui/core';
-import { CartItem, InitialState, OrderData } from '../redux/store/initialState';
-import { order_action } from '../redux/products/operations';
-import { CartState } from '../features/cart/cartSlice';
-import { UserType } from '../features/user/userSlice';
+import { useForm } from 'react-hook-form'
+import { Box, Button, FormControl, MenuItem, Select, TextField, InputLabel, FormHelperText } from '@material-ui/core';
 import { orderAsync, OrderType } from '../features/order/orderSlice';
 
 interface OrderFormProps {
   getCart: OrderType
-  // getUser: UserType
 }
 
 const OrderForm = ({ getCart }: OrderFormProps) => {
@@ -79,7 +73,6 @@ const OrderForm = ({ getCart }: OrderFormProps) => {
     data._id = getCart._id
     data.uid = getCart.uid
     data.itemInfo = getCart.itemInfo
-    console.log(data)
     dispatch(orderAsync(data))
   });
 
