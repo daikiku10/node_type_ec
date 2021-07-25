@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice,} from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { CartState } from "../cart/cartSlice";
-import { add_order_info} from './orderAPI';
+import { UserType } from "../user/userSlice";
+import { add_order_info, fetch_order_info} from './orderAPI';
 
 
 interface ThunkConfig {
@@ -36,6 +37,20 @@ const initialState: OrderState = {
   value: [],
 }
 
+// 注文データの取得処理
+export const fetchOrderAsync = createAsyncThunk<
+  OrderType[],
+  UserType,
+  ThunkConfig
+>('cart/fetch-order', async ( getUser, { rejectWithValue }) => {
+  try {
+    const order_info = await fetch_order_info(getUser)
+    return order_info
+  } catch (e) {
+    return rejectWithValue({ errorMsg: e.message });
+  }
+})
+
 // オーダー時（カート情報に注文情報を追加して更新する処理）
 export const orderAsync = createAsyncThunk<
 OrderType,
@@ -56,6 +71,9 @@ export const OrderSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(fetchOrderAsync.fulfilled, (state, action) => {
+      state.value = [...action.payload]
+    })
     builder.addCase(orderAsync.fulfilled, (state, action) => {
       let orderdata = [...state.value ,action.payload]
       state.value =  orderdata

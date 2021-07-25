@@ -38,6 +38,16 @@ router.post('/update-cart', (req, res) => {
 // ------------------------------------------
 // ここからは注文時処理
 
+// 注文情報の取得
+router.post('/fetch-order', (req, res) => {
+  const uid = req.body.uid;
+  //「$ne」は指定の値に一致しないもの
+  Cart.find({ uid: uid, status: { $ne: 0 }}).then((orders) => {
+    console.log(orders)
+    res.send(orders)
+  })
+})
+
 // カート商品を購入する処理
 router.post('/add-order', (req, res) => {
   const orderInfo = req.body;
@@ -58,7 +68,6 @@ router.post('/add-order', (req, res) => {
     }},
     { new: true }
   ).then((order) => {
-    console.log('ここまで' + order)
     res.send(order)
   })
 })

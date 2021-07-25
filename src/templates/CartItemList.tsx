@@ -9,7 +9,7 @@ import { selectUser } from '../features/user/userSlice';
 import { selectCart, fetchCartAsync, CartState, AddCartAsync } from '../features/cart/cartSlice';
 
 import { Button } from '@material-ui/core'
-import { selectOrder } from '../features/order/orderSlice';
+import { fetchOrderAsync, selectOrder } from '../features/order/orderSlice';
 
 
 const CartItemList = () => {
@@ -24,6 +24,7 @@ const CartItemList = () => {
   useEffect(() => {
     if(getUser){
       dispatch(fetchCartAsync(getUser));
+      dispatch(fetchOrderAsync(getUser));
     }
   },[getUser])
 
