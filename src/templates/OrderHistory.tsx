@@ -1,16 +1,17 @@
 import React, {useEffect} from 'react';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCart_action, resetOrder_action, setItems_action, setToppings_action, cancelOrder_action } from '../redux/products/operations';
 import { InitialState, OrderData } from '../redux/store/initialState';
 import {makeStyles} from "@material-ui/core/styles";
 import { Button, Grid, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
 import Inner from '../components/inner/Inner';
+import { fetchOrderAsync, selectOrder } from '../features/order/orderSlice';
+import { selectUser } from '../features/user/userSlice';
+import { selectItems } from '../features/item/itemsSlice';
+import { selectToppings } from '../features/topping/toppingsSlice';
 
 
-const itemsSelector = (state: InitialState) => state.products.items
-const toppingsSelector = (state: InitialState) => state.products.toppings
-const ordersSelector = (state: InitialState) => state.products.orders
-const userSelector = (state: InitialState) => state.user
 
 const useStyles = makeStyles((theme) => ({
   orderList: {
@@ -45,31 +46,25 @@ const useStyles = makeStyles((theme) => ({
 
 const OrderHistory = () => {
   const classes = useStyles()
-  const dispatch = useDispatch();
-  const getItems = useSelector(itemsSelector);
-  const getToppings = useSelector(toppingsSelector);
-  const getOrders = useSelector(ordersSelector);
-  const getUser = useSelector(userSelector);
-
-  useEffect(() => {
-    dispatch(setItems_action());
-    dispatch(setToppings_action());
-    return () => {
-      dispatch(resetOrder_action())
-    }
-  }, [])
+  const dispatch = useAppDispatch();
+  const getUser = useAppSelector(selectUser);
+  const getItems = useAppSelector(selectItems);
+  const getToppings = useAppSelector(selectToppings);
+  const getOrders = useAppSelector(selectOrder);
+  console.log(getOrders)
 
   useEffect(() => {
     if(getUser){
-      dispatch(setCart_action(getUser))
+      dispatch(fetchOrderAsync(getUser));
     }
   }, [getUser])
 
-  const changeStatusBtn = (orderData: OrderData) => {
-    orderData.status = 9
-    if(getUser){
-      dispatch(cancelOrder_action(orderData, getUser))
-    }
+  const changeStatusBtn = () => {
+    console.log('ステータスチェンジボタン')
+    // orderData.status = 9
+    // if(getUser){
+    //   dispatch(cancelOrder_action(orderData, getUser))
+    // }
   }
 
   return (
@@ -81,10 +76,10 @@ const OrderHistory = () => {
             return order.status === 1
           }).map((orderData, index1) => (
             <List className={classes.orderList} key={index1}>
-              <div>注文日時：{orderData.orderDate}</div>
+              <div>注文日時：{orderData.destinationTime}</div>
               {orderData.itemInfo.map((data, index) => (
                 <List key={index}>
-                  {getItems.filter((item) =>{
+                  {getItems[0].items.filter((item) =>{
                     return data.itemId === item.id
                   }).map((itemData) => (
                     <ListItem className={classes.list} key={index}>
@@ -97,7 +92,7 @@ const OrderHistory = () => {
                         <ListItemText secondary={"数量：" + data.buyNum + "杯"} />
                         {data.toppings.map((dataTop, indexTop) => (
                           <React.Fragment key={indexTop}>
-                            {getToppings.filter((topping) => {
+                            {getToppings[0].toppings.filter((topping) => {
                               return dataTop.id === topping.id
                             }).map((toppingData) => (
                               <React.Fragment key={indexTop}>
@@ -112,7 +107,7 @@ const OrderHistory = () => {
                 </List>
               ))}
               <Grid container justify="flex-end">
-                <Button onClick={() => changeStatusBtn(orderData)}>キャンセル</Button>
+                <Button onClick={() => changeStatusBtn()}>キャンセル</Button>
               </Grid>
             </List>
           ))}
@@ -120,10 +115,10 @@ const OrderHistory = () => {
             return order.status === 2
           }).map((orderData, index1) => (
             <List className={classes.orderList} key={index1}>
-              <div>注文日時：{orderData.orderDate}</div>
+              <div>注文日時：{orderData.destinationTime}</div>
               {orderData.itemInfo.map((data, index) => (
                 <List key={index}>
-                  {getItems.filter((item) =>{
+                  {getItems[0].items.filter((item) =>{
                     return data.itemId === item.id
                   }).map((itemData) => (
                     <ListItem className={classes.list} key={index}>
@@ -136,7 +131,7 @@ const OrderHistory = () => {
                         <ListItemText secondary={"数量：" + data.buyNum + "杯"} />
                         {data.toppings.map((dataTop, indexTop) => (
                           <React.Fragment key={indexTop}>
-                            {getToppings.filter((topping) => {
+                            {getToppings[0].toppings.filter((topping) => {
                               return dataTop.id === topping.id
                             }).map((toppingData) => (
                               <React.Fragment key={indexTop}>
@@ -151,7 +146,7 @@ const OrderHistory = () => {
                 </List>
               ))}
               <Grid container justify="flex-end">
-                <Button onClick={() => changeStatusBtn(orderData)}>キャンセル</Button>
+                <Button onClick={() => changeStatusBtn()}>キャンセル</Button>
               </Grid>
             </List>
           ))}
@@ -159,10 +154,10 @@ const OrderHistory = () => {
             return order.status === 9
           }).map((orderData, index1) => (
             <List className={classes.orderList} key={index1}>
-              <div>注文日時：{orderData.orderDate}</div>
+              <div>注文日時：{orderData.destinationTime}</div>
               {orderData.itemInfo.map((data, index) => (
                 <List key={index}>
-                  {getItems.filter((item) =>{
+                  {getItems[0].items.filter((item) =>{
                     return data.itemId === item.id
                   }).map((itemData) => (
                     <ListItem className={classes.list} key={index}>
@@ -175,7 +170,7 @@ const OrderHistory = () => {
                         <ListItemText secondary={"数量：" + data.buyNum + "杯"} />
                         {data.toppings.map((dataTop, indexTop) => (
                           <React.Fragment key={indexTop}>
-                            {getToppings.filter((topping) => {
+                            {getToppings[0].toppings.filter((topping) => {
                               return dataTop.id === topping.id
                             }).map((toppingData) => (
                               <React.Fragment key={indexTop}>

@@ -6,10 +6,8 @@ import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { selectItems } from '../features/item/itemsSlice';
 import { selectToppings } from '../features/topping/toppingsSlice';
 import { selectUser } from '../features/user/userSlice';
-import { selectCart, fetchCartAsync, CartState, AddCartAsync } from '../features/cart/cartSlice';
-
+import { selectCart, fetchCartAsync, AddCartAsync } from '../features/cart/cartSlice';
 import { Button } from '@material-ui/core'
-import { fetchOrderAsync, selectOrder } from '../features/order/orderSlice';
 
 
 const CartItemList = () => {
@@ -18,13 +16,10 @@ const CartItemList = () => {
   const getToppings = useAppSelector(selectToppings);
   const getUser = useAppSelector(selectUser);
   const getCart = useAppSelector(selectCart);
-  const getOrder = useAppSelector(selectOrder);
-  console.log(getOrder);
 
   useEffect(() => {
     if(getUser){
       dispatch(fetchCartAsync(getUser));
-      dispatch(fetchOrderAsync(getUser));
     }
   },[getUser])
 
