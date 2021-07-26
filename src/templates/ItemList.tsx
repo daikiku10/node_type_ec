@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
-import { Card, CardActionArea, CardContent, CardMedia, } from "@material-ui/core";
+import { Card, CardActionArea, CardContent, CardMedia, TextField } from "@material-ui/core";
 import Inner from '../components/inner/Inner';
 import { ColorButton, InputField } from '../components/atoms';
 import { selectUser } from '../features/user/userSlice';
-import { selectItems } from '../features/item/itemsSlice';
+import { ItemType, selectItems } from '../features/item/itemsSlice';
 
 
 const useStyles = makeStyles({
@@ -44,36 +44,40 @@ const ItemList = () => {
   const classes = useStyles();
   const [itemsArray, setItemsArray] = useState(getItems)
   const [mozi, setMozi] = useState<string>("")
-  console.log(itemsArray)
 
   useEffect(() => {
     setItemsArray(getItems)
   }, [getItems])
 
   // 検索処理
-  // const searchWord = () => {
-  //   setItemsArray(getItems);
-  //   let searchArray = getItems.filter((item) => {
-  //     return 0 <= item.title.indexOf(mozi);
-  //   })
-  //   if (searchArray.length === 0){
-  //     setItemsArray(getItems)
-  //   } else {
-  //     setItemsArray(searchArray)
-  //   }
-  // }
+  const searchWord = () => {
+    if (mozi === "" || mozi === undefined) {
+      setItemsArray(getItems)
+    } else {
+      let searchArray = getItems[0].items.filter((item) => {
+        return 0 <= item.title.indexOf(mozi);
+      })
+      let searchGetItems:any = [{items:{}}];
+      if(searchGetItems.length > 0) {
+        searchGetItems[0].items = searchArray
+        console.log(searchGetItems)
+        setItemsArray(searchGetItems);
+        setMozi("")
+      } 
+    }
+  }
 
   // クリアボタンの処理
-  // const clearBtn = () => {
-  //   setMozi("")
-  //   setItemsArray(getItems)
-  // }
+  const clearBtn = () => {
+    setMozi("")
+    setItemsArray(getItems)
+  }
 
   
   return (
     <Inner>
       <div style={{ textAlign: "center" }}>
-        {/* <TextField
+        <TextField
           className={classes.input}
           id="filled-basic"
           label="Search Noodle"
@@ -81,21 +85,21 @@ const ItemList = () => {
           autoComplete="off"
           value={mozi}
           onChange={(e) => setMozi(e.target.value)}
-        /> */}
-        <InputField
-          label={"ラーメン検索"}
         />
+        {/* <InputField
+          label={"ラーメン検索"}
+        /> */}
         <ColorButton 
           label={"検索"}
           background={"#CF000D"}
           color={"#fff"}
-          onClick={() => console.log('検索')}
+          onClick={() => searchWord()}
         />
         <ColorButton
           label={"クリア"}
           background={"#CF000D"}
           color={"#fff"}
-          onClick={() => console.log('クリア')}
+          onClick={() => clearBtn()}
          />
       </div>
       <ol className={classes.cardList}>

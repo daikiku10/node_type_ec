@@ -62,7 +62,7 @@ const ItemDetail = () => {
     setBuyNum(e.target.value)
   }
 
-  // // 選択したトッピングの処理
+  // 選択したトッピングの処理
   const [choiceToppings, setChoiceToppings] = useState<{id: number}[]>([])
   const changeTopping = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.checked) {
@@ -115,39 +115,6 @@ const ItemDetail = () => {
       handleLink('/cart-item-list')
 
     }
-    // if(getUserData){
-    //   if(!getCart){
-    //     dispatch(newCart_action(cartItem, getUser))
-    //     handleLink('/cart-item-list')
-    //   } else {
-    //     const copyCartItem: CartItem = getCart
-    //     let addItemInfo: ItemInfo[] = [...copyCartItem.itemInfo, cartItem.itemInfo[0]]
-    //     let addCartData: CartItem = {
-    //       id: getCart.id,
-    //       orderId: getCart.orderId,
-    //       status: 0,
-    //       itemInfo: addItemInfo
-    //     }
-    //     dispatch(addCart_action(addCartData, getUser))
-    //     handleLink('/cart-item-list')
-    //   }
-    // }else {
-    //   if(!getCart){
-    //     dispatch(newCart_action(cartItem, getUser))
-    //     handleLink('/cart-item-list')
-    //   } else {
-    //     const copyCartItem: CartItem = getCart
-    //     let addItemInfo: ItemInfo[] = [...copyCartItem.itemInfo, cartItem.itemInfo[0]]
-    //     let addCartData: CartItem = {
-    //       id: getCart.id,
-    //       orderId: getCart.orderId,
-    //       status: 0,
-    //       itemInfo: addItemInfo
-    //     }  
-    //     dispatch(addCart_action(addCartData, getUser))
-    //     handleLink('/cart-item-list')
-    //   }
-    // }
   }
 
   // 選んだトッピング（奇数）

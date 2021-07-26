@@ -59,7 +59,7 @@ const OrderHistory = () => {
   const changeStatusBtn = (orderData: OrderType) => {
     const copyOrderData = JSON.parse(JSON.stringify(orderData))
     copyOrderData.status = 9
-     dispatch(changeOrderStatusAsync(copyOrderData))
+    dispatch(changeOrderStatusAsync(copyOrderData))
   }
 
   return (
